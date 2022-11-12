@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 
-@Entity
+@Entity (name = "moment_group")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
