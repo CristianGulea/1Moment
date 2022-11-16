@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { MatIconModule } from '@angular/material/icon'
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { GroupDiscussionPageComponent } from './groups/group-discussion-page/group-discussion-page.component';
@@ -35,12 +31,12 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    GroupDiscussionPageComponent
+    GroupDiscussionPageComponent,
     LoginComponent
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatToolbarModule,
     MatIconModule,
@@ -53,7 +49,7 @@ const routes: Routes = [
     MatButtonModule,
     MatListModule,
     MatProgressSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
     BrowserModule,
     MatIconModule,
     MatFormFieldModule,
