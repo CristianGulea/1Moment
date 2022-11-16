@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/moment
+    username: postgres
+    password: Biancaevtm1.
+    driver-class-name: org.postgresql.Driver
