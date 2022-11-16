@@ -9,7 +9,7 @@ export class LoginService {
 
   public handleLoginByCredentials(username: string, password: string) {
   //request
-  alert("username: " + username + "    password: " + password);
+  //alert("username: " + username + "    password: " + password);
 }
 
 }
