@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fbdcf538-da5c-4556-a6d1-4c7429e0aba7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/moment/api/ApiApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/moment/api/ApiApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ro/moment/api/domain/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ro/moment/api/domain/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +112,7 @@
       <workItem from="1668508702219" duration="1692000" />
       <workItem from="1668510908610" duration="1596000" />
       <workItem from="1668619019070" duration="758000" />
-      <workItem from="1668619821870" duration="2978000" />
+      <workItem from="1668619821870" duration="4747000" />
     </task>
     <servers />
   </component>
