@@ -13,15 +13,15 @@
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
-  color: dimgray;
+  /*color: dimgray;*/
 }
 
 ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-  color: dimgray;
+  /*color: dimgray;*/
 }
 
 ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
-  color: dimgray;
+  /*color: dimgray;*/
 }
 
 #sign-up-container{
@@ -38,7 +38,7 @@
   border-radius: 30px;
   margin-left: auto;
   margin-right: auto;
- 
+
 }
 
 
