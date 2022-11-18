@@ -19,20 +19,23 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatListModule} from "@angular/material/list";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {HttpClientModule} from "@angular/common/http";
+import { GroupsPageComponent } from './groups/groups-page/groups-page.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'register', component: LoginComponent },
-  {path:'group/:id', component:GroupDiscussionPageComponent}
+  {path:'group/:id', component:GroupDiscussionPageComponent},
+  {path: 'groups', component: GroupsPageComponent}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
     GroupDiscussionPageComponent,
-    LoginComponent
+    LoginComponent,
+    GroupsPageComponent
   ],
   imports: [
     BrowserModule,
