@@ -27,8 +27,8 @@ public class MessageController {
         return messageRepository.findAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getByGroupId(@PathVariable String id) {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity<?> getByGroupId(@RequestParam String id) {
         System.out.println("Get by group id " + id);
 
         List<Message> result = messageRepository.findMessageByGroupId(Long.valueOf(id));

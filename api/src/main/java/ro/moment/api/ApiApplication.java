@@ -26,8 +26,8 @@ public class ApiApplication {
     @Bean
     public CommandLineRunner testing(UserRepository userRepository) {
         return (args) -> {
-            User user = new User("Test", "");
-            userRepository.save(user);
+            //User user = new User("Test", "");
+            //userRepository.save(user);
 
             List<User> users = userRepository.findAll();
             users.forEach(System.out::println);
