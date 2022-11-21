@@ -33,9 +33,9 @@ public class GroupService {
         return group.map(GroupDto::new).orElse(null);
     }
 
-    public Group save(GroupDto groupDto) {
+    public void save(GroupDto groupDto) {
         validateGroup(groupDto);
-        return groupRepository.save(groupDto.toDomain());
+        groupRepository.save(groupDto.toDomain());
     }
 
     public void deleteById(Long id) {

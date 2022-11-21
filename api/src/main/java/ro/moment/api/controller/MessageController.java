@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Message;
+import ro.moment.api.domain.dto.MessageDto;
 import ro.moment.api.repository.MessageRepository;
 import ro.moment.api.service.MessageService;
 
@@ -22,7 +23,7 @@ public class MessageController {
     private final MessageService messageService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Message> getAll() {
+    public List<MessageDto> getAll() {
         System.out.println("Get all messages ...");
         return messageService.findAll();
     }
@@ -31,26 +32,26 @@ public class MessageController {
     public ResponseEntity<?> getByGroupId(@RequestParam String id) {
         System.out.println("Get by group id " + id);
 
-        List<Message> result = messageService.findMessageByGroupId(Long.valueOf(id));
-        return new ResponseEntity<List<Message>>(result, HttpStatus.OK);
+        List<MessageDto> result = messageService.findMessageByGroupId(Long.valueOf(id));
+        return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getById(@PathVariable String id) {
         System.out.println("Get by id " + id);
 
-        Optional<Message> message = messageService.findById(Long.valueOf(id));
-        if (message.isEmpty())
+        MessageDto message = messageService.findById(Long.valueOf(id));
+        if (message == null)
             return new ResponseEntity<String>("Message not found", HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity<Optional<Message>>(message, HttpStatus.OK);
+            return new ResponseEntity<MessageDto>(message, HttpStatus.OK);
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestBody Message message) {
+    public ResponseEntity<?> create(@RequestBody MessageDto message) {
         messageService.save(message);
-        return new ResponseEntity<Message>(message,HttpStatus.CREATED);
+        return new ResponseEntity<MessageDto>(message, HttpStatus.CREATED);
 
     }
 
