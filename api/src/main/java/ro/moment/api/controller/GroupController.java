@@ -24,14 +24,14 @@ public class GroupController {
     @RequestMapping( method=RequestMethod.GET)
     public List<Group> getAll(){
         System.out.println("Get all groups ...");
-        return groupRepository.findAll();
+        return groupService.findAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getById(@PathVariable String id){
         System.out.println("Get by id "+id);
 
-        Optional<Group> group=groupRepository.findById(Long.valueOf(id));
+        Optional<Group> group = groupService.findById(Long.valueOf(id));
         if (group.isEmpty())
             return new ResponseEntity<String>("Group not found",HttpStatus.NOT_FOUND);
         else
@@ -41,7 +41,7 @@ public class GroupController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Group group){
-        groupRepository.save(group);
+        groupService.save(group);
         return new ResponseEntity<Group>(group, HttpStatus.CREATED);
 
     }
@@ -50,7 +50,7 @@ public class GroupController {
     public ResponseEntity<?> delete(@PathVariable String id){
         System.out.println("Deleting group ... "+id);
         try {
-            groupRepository.deleteById(Long.valueOf(id));
+            groupService.deleteById(Long.valueOf(id));
             return new ResponseEntity<Group>(HttpStatus.OK);
         }catch (Exception ex){
             System.out.println("Ctrl Delete group exception");
