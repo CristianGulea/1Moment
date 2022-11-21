@@ -23,10 +23,12 @@ public class BaseEntityDto {
     }
 
     public BaseEntityDto(BaseEntity entity) {
-        this.id = entity.getId();
-        this.createdDate = entity.getCreatedDate();
-        this.updatedDate = entity.getUpdatedDate();
-        this.externalId = entity.getExternalId();
+        if (entity != null) {
+            this.id = entity.getId();
+            this.createdDate = entity.getCreatedDate();
+            this.updatedDate = entity.getUpdatedDate();
+            this.externalId = entity.getExternalId();
+        }
     }
 
     public BaseEntityDto() {

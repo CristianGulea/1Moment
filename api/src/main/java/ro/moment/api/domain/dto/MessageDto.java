@@ -29,10 +29,13 @@ public class MessageDto extends BaseEntityDto{
 
     public MessageDto(Message entity) {
         super(entity);
-        this.user = new UserDto(entity.getUser());
-        this.group = new GroupDto(entity.getGroup());
-        this.title = entity.getTitle();
-        this.content = entity.getContent();
+
+        if(entity != null) {
+            this.user = new UserDto(entity.getUser());
+            this.group = new GroupDto(entity.getGroup());
+            this.title = entity.getTitle();
+            this.content = entity.getContent();
+        }
     }
 
     public MessageDto() {

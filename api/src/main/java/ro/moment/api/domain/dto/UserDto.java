@@ -22,7 +22,10 @@ public class UserDto extends BaseEntityDto{
 
     public UserDto(User entity) {
         super(entity);
-        this.username = entity.getUsername();
+
+        if (entity != null) {
+            this.username = entity.getUsername();
+        }
     }
 
     public UserDto() {

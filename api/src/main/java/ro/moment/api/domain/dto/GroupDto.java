@@ -21,7 +21,9 @@ public class GroupDto extends BaseEntityDto{
 
     public GroupDto(Group entity) {
         super(entity);
-        this.name = entity.getName();
+        if (entity != null) {
+            this.name = entity.getName();
+        }
     }
 
     public GroupDto() {
