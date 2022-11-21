@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Group;
+import ro.moment.api.domain.dto.GroupDto;
 import ro.moment.api.repository.GroupRepository;
 import ro.moment.api.service.GroupService;
 
@@ -22,7 +23,7 @@ public class GroupController {
     private final GroupService groupService;
 
     @RequestMapping( method=RequestMethod.GET)
-    public List<Group> getAll(){
+    public List<GroupDto> getAll(){
         System.out.println("Get all groups ...");
         return groupService.findAll();
     }
@@ -31,18 +32,18 @@ public class GroupController {
     public ResponseEntity<?> getById(@PathVariable String id){
         System.out.println("Get by id "+id);
 
-        Optional<Group> group = groupService.findById(Long.valueOf(id));
-        if (group.isEmpty())
+        GroupDto group = groupService.findById(Long.valueOf(id));
+        if (group == null)
             return new ResponseEntity<String>("Group not found",HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity <Optional<Group>>(group, HttpStatus.OK);
+            return new ResponseEntity <GroupDto>(group, HttpStatus.OK);
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestBody Group group){
+    public ResponseEntity<?> create(@RequestBody GroupDto group){
         groupService.save(group);
-        return new ResponseEntity<Group>(group, HttpStatus.CREATED);
+        return new ResponseEntity<GroupDto>(group, HttpStatus.CREATED);
 
     }
 
