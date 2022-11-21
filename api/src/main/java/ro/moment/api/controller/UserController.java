@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Group;
 import ro.moment.api.domain.User;
+import ro.moment.api.domain.dto.UserDto;
 import ro.moment.api.repository.UserRepository;
 import ro.moment.api.service.UserService;
 
@@ -22,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @RequestMapping( method=RequestMethod.GET)
-    public List<User> getAll(){
+    public List<UserDto> getAll(){
         System.out.println("Get all users ...");
         return userService.findAll();
     }
@@ -30,28 +31,28 @@ public class UserController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getById(@PathVariable String id){
         System.out.println("Get by id "+id);
-        Optional<User> user=userService.findById(Long.valueOf(id));
-        if (user.isEmpty())
+        UserDto user = userService.findById(Long.valueOf(id));
+        if (user == null)
             return new ResponseEntity<String>("User not found",HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity <Optional<User>>(user, HttpStatus.OK);
+            return new ResponseEntity <UserDto>(user, HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ResponseEntity<?> getByUsername(@PathVariable String username){
         System.out.println("Get by username "+username);
-        User user=userService.findByUsername(username);
+        UserDto user = userService.findByUsername(username);
         if (user==null)
             return new ResponseEntity<String>("User not found",HttpStatus.NOT_FOUND);
         else
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+            return new ResponseEntity<UserDto>(user, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestBody User user){
+    public ResponseEntity<?> create(@RequestBody UserDto user){
         userService.save(user);
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+        return new ResponseEntity<UserDto>(user, HttpStatus.CREATED);
 
     }
 

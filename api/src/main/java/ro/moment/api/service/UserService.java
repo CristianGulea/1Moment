@@ -3,8 +3,10 @@ package ro.moment.api.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.moment.api.domain.User;
+import ro.moment.api.domain.dto.UserDto;
 import ro.moment.api.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,25 +15,36 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    private void validateUser(User user) {
+    private void validateUser(UserDto userDto) {
         //todo: validate fields
     }
 
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserDto> findAll() {
+        List<User> users = userRepository.findAll();
+        List<UserDto> dtos = new ArrayList<UserDto>();
+
+        users.forEach(u -> dtos.add(new UserDto(u)));
+        return dtos;
     }
 
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public UserDto findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+
+        return user.map(UserDto::new).orElse(null);
     }
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public UserDto findByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            return null;
+        }
+        return new UserDto(user);
     }
 
-    public User save(User user) {
+    public void save(UserDto user) {
         validateUser(user);
-        return userRepository.save(user);
+        userRepository.save(user.toDomain());
     }
 
     public void deleteById(Long id) {
