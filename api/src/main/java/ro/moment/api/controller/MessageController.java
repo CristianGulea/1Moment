@@ -24,14 +24,14 @@ public class MessageController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Message> getAll() {
         System.out.println("Get all messages ...");
-        return messageRepository.findAll();
+        return messageService.findAll();
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<?> getByGroupId(@RequestParam String id) {
         System.out.println("Get by group id " + id);
 
-        List<Message> result = messageRepository.findMessageByGroupId(Long.valueOf(id));
+        List<Message> result = messageService.findMessageByGroupId(Long.valueOf(id));
         return new ResponseEntity<List<Message>>(result, HttpStatus.OK);
     }
 
@@ -39,7 +39,7 @@ public class MessageController {
     public ResponseEntity<?> getById(@PathVariable String id) {
         System.out.println("Get by id " + id);
 
-        Optional<Message> message = messageRepository.findById(Long.valueOf(id));
+        Optional<Message> message = messageService.findById(Long.valueOf(id));
         if (message.isEmpty())
             return new ResponseEntity<String>("Message not found", HttpStatus.NOT_FOUND);
         else
@@ -49,7 +49,7 @@ public class MessageController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Message message) {
-        messageRepository.save(message);
+        messageService.save(message);
         return new ResponseEntity<Message>(message,HttpStatus.CREATED);
 
     }
@@ -58,7 +58,7 @@ public class MessageController {
     public ResponseEntity<?> delete(@PathVariable String id) {
         System.out.println("Deleting message ... " + id);
         try {
-            messageRepository.deleteById(Long.valueOf(id));
+            messageService.deleteById(Long.valueOf(id));
             return new ResponseEntity<Message>(HttpStatus.OK);
         } catch (Exception ex) {
             System.out.println("Ctrl Delete message exception");
