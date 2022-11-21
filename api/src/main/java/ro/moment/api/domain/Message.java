@@ -22,10 +22,6 @@ public class Message extends BaseEntity{
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
 
-    private boolean liked;
-
-    private long like_count;
-
     private String title;
     private String content;
 }

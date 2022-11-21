@@ -1,10 +1,12 @@
 package ro.moment.api.controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Group;
 import ro.moment.api.repository.GroupRepository;
+import ro.moment.api.service.GroupService;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +16,10 @@ import java.util.stream.StreamSupport;
 @CrossOrigin
 @RestController
 @RequestMapping("/group")
+@RequiredArgsConstructor
 public class GroupController {
 
-
-    @Autowired
-    private GroupRepository groupRepository;
+    private final GroupService groupService;
 
     @RequestMapping( method=RequestMethod.GET)
     public List<Group> getAll(){

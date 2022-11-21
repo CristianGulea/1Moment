@@ -1,4 +1,5 @@
 package ro.moment.api.controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Group;
 import ro.moment.api.domain.User;
 import ro.moment.api.repository.UserRepository;
+import ro.moment.api.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,22 +17,20 @@ import java.util.stream.StreamSupport;
 @CrossOrigin
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
-
-
-    @Autowired
-    private UserRepository userRepository;
+    private final UserService userService;
 
     @RequestMapping( method=RequestMethod.GET)
     public List<User> getAll(){
         System.out.println("Get all users ...");
-        return userRepository.findAll();
+        return userService.findAll();
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<?> getById(@PathVariable String id){
         System.out.println("Get by id "+id);
-        Optional<User> user=userRepository.findById(Long.valueOf(id));
+        Optional<User> user=userService.findById(Long.valueOf(id));
         if (user.isEmpty())
             return new ResponseEntity<String>("User not found",HttpStatus.NOT_FOUND);
         else
@@ -41,7 +41,7 @@ public class UserController {
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
     public ResponseEntity<?> getByUsername(@PathVariable String username){
         System.out.println("Get by username "+username);
-        User user=userRepository.findByUsername(username);
+        User user=userService.findByUsername(username);
         if (user==null)
             return new ResponseEntity<String>("User not found",HttpStatus.NOT_FOUND);
         else
@@ -50,7 +50,7 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody User user){
-        userRepository.save(user);
+        userService.save(user);
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
 
     }
@@ -59,7 +59,7 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable String id){
         System.out.println("Deleting user ... "+id);
         try {
-            userRepository.deleteById(Long.valueOf(id));
+            userService.deleteById(Long.valueOf(id));
             return new ResponseEntity<User>(HttpStatus.OK);
         }catch (Exception ex){
             System.out.println("Ctrl Delete user exception");
