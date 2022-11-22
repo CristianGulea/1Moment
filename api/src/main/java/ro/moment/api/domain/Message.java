@@ -14,11 +14,11 @@ import javax.persistence.*;
 @Setter
 public class Message extends BaseEntity{
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "group_id", referencedColumnName = "id")
     private Group group;
 

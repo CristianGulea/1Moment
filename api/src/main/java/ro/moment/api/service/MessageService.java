@@ -2,11 +2,12 @@ package ro.moment.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ro.moment.api.domain.Group;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.dto.MessageDto;
+import ro.moment.api.repository.GroupRepository;
 import ro.moment.api.repository.LikeRepository;
 import ro.moment.api.repository.MessageRepository;
+import ro.moment.api.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final LikeRepository likeRepository;
+    private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
 
     private void validateMessage(MessageDto messageDto) {
         //todo: validate fields
@@ -46,7 +49,12 @@ public class MessageService {
 
     public void save(MessageDto messageDto) {
         validateMessage(messageDto);
-        messageRepository.save(messageDto.toDomain());
+        Message message = messageDto.toDomain();
+        Long userId = userRepository.findByUsername(messageDto.getUsername()).getId();
+        message.getUser().setId(userId);
+        Long groupId = groupRepository.findByName(messageDto.getGroupName()).getId();
+        message.getGroup().setId(groupId);
+        messageRepository.save(message);
     }
 
     public void deleteById(Long id) {
