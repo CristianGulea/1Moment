@@ -50,9 +50,9 @@ public class MessageService {
     public void save(MessageDto messageDto) {
         validateMessage(messageDto);
         Message message = messageDto.toDomain();
-        Long userId = userRepository.findByUsername(messageDto.getUsername()).getId();
+        Long userId = messageDto.getUserId();       //todo: validate this
         message.getUser().setId(userId);
-        Long groupId = groupRepository.findByName(messageDto.getGroupName()).getId();
+        Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
         messageRepository.save(message);
     }
