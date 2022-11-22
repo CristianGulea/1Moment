@@ -6,4 +6,5 @@ import ro.moment.api.domain.Group;
 
 @Repository
 public interface GroupRepository extends JpaRepository<Group,Long> {
+    Group findByName(String name);
 }
