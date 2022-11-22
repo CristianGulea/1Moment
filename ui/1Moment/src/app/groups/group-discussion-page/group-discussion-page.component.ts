@@ -26,37 +26,17 @@ export class GroupDiscussionPageComponent implements OnInit {
         this.group.id= params['id'];
       }
     )
-    this.messages= [{
-      id:1,
-      user_id:1,
-      group_id:1,
-      title: "Ce mai incurcatura",
-      text:"Sa vedeti ce am patit"
-    },
-      {
-        id:2,
-        user_id:1,
-        group_id:1,
-        title: "Ce mai incurcatura2",
-        text:"Sa vedeti ce am patit2"
-      },
-      {
-        id:3,
-        user_id:1,
-        group_id:1,
-        title: "Ce mai incurcatura3",
-        text:"Sa vedeti ce am patit3"
-      },
-    ];
-    // this.groupService.getGroupDiscussions(this.group.id).subscribe(
-    //   messages=>{
-    //     this.isFetching=true;
-    //     this.messages= messages;
-    //   },error => {
-    //     this.isFetching= false;
-    //     this.error= true;
-    //   }
-    // );
+    this.isFetching=true;
+    this.groupService.getGroupDiscussions(this.group.id).subscribe(
+      messages=>{
+        this.isFetching=false;
+        console.log(messages);
+        this.messages= messages;
+      },error => {
+        this.isFetching= false;
+        this.error= true;
+      }
+    );
     if(this.error){
       this.router.navigate(['/error']);
     }

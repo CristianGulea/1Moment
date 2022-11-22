@@ -10,8 +10,8 @@ export class GroupService{
   }
 
   getGroupDiscussions(id:number){
-    return this.http.get<Message[]>('',{
-      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+    return this.http.get<Message[]>('http://localhost:8080/message/',{
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiQURNSU4iLCJleHAiOjE2NjkyMjk2ODB9.lgwhS8b1TpoAuvTEv-dP1adgKSJc9WXtQgNVktlH-4U'}),
       params: new HttpParams().set('id', id)
     });
   }
