@@ -1,0 +1,48 @@
+<div class="container-fluid border h-100">
+  <div class="alert alert-danger" id="alertLogin" role="alert" *ngIf="hideAlert">
+    <h5 id="textAlert">Sorry, your password or username was incorrect. Please double-check your password and username.</h5>
+    <button class="border-0" id="closeAlert" (click)="hideAlert = false">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div id="sign-in-row" class="shadow w-50">
+    <div class="row text-center">
+      <h3 id="login-title">Login</h3>
+    </div>
+    <div class="row w-50 m-auto">
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput required [(ngModel)]="username" (change)="hideAlert = false">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput required [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
+        <button class="border-0 bg-white" mat-icon-button matSuffix (click)="hide = !hide" (change)="hideAlert = false">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <div class="row w-50 m-auto">
+      <div id="login-button-container" class="row d-flex justify-content-center">
+        <button
+                mat-button
+                class="btn border rounded-pill"
+                id="login-button"
+                (click)="login()"
+                [disabled]="!username || !password">
+
+        Login</button>
+      </div>
+    </div>
+  </div>
+  <div id="sign-up-row" class="row shadow">
+    <div class="text-center" id="sign-up-container">
+      Don't have an account?
+      <button
+              routerLink="/register"
+              id="sign-up-button"
+              class="border-0 bg-opacity-0">
+      Sign Up</button>
+    </div>
+  </div>
+</div>
