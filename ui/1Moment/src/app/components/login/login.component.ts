@@ -18,9 +18,15 @@ export class LoginComponent implements OnInit {
   }
 
   hide: boolean = true;
+  hideAlert: boolean = false;
 
   public login() {
-    this.loginService.handleLoginByCredentials(this.username, this.password);
-    this.routes.navigate(["/groups"]);
+    this.loginService.handleLoginByCredentials(this.username, this.password).subscribe({next: message => {
+      this.loginService.saveUserToLocalStorage(this.username, this.password, message);
+        this.routes.navigate(["/groups"]);
+      }, error: err => {
+        console.log("ERR---"); console.log(err);
+        this.hideAlert = true;
+      }})
   }
 }
