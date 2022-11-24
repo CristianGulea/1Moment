@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient,  HttpHeaders} from "@angular/common/http";
 import { BehaviorSubject } from 'rxjs';
 import {User} from "./User";
 import {Router} from "@angular/router";
@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 })
 export class LoginService {
 
-  user: BehaviorSubject<User> = new BehaviorSubject<User>({username: "", password: "", accessToken: "", refreshToken:""});
+  user = new BehaviorSubject<User>({});
 
   constructor(private http: HttpClient, private routes: Router) { }
 
@@ -21,6 +21,7 @@ export class LoginService {
   public saveUserToLocalStorage(username: string, password: string, message:Object){
     let newUser = {username: username, password: "", accessToken: JSON.parse(JSON.stringify(message)).accessToken, refreshToken: JSON.parse(JSON.stringify(message)).refreshToken};
     this.user.next(newUser);
+    console.log(this.user);
     localStorage.setItem("user", JSON.stringify(this.user.getValue()));
     setTimeout(() => {
       this.refreshToken();
@@ -34,11 +35,11 @@ export class LoginService {
       let accessToken: String = JSON.parse(user).accessToken;
       this.http.post('http://localhost:8080/user/refresh', {refreshToken: refreshToken}, {
         headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken })})
-        .subscribe({next: message => {
+        .subscribe({next: () => {
           setTimeout(() => {
             this.refreshToken();
           }, 300000);
-          }, error: err => {
+          }, error: () => {
             localStorage.clear();
             this.routes.navigate(["/login"]);
           }});
@@ -49,6 +50,11 @@ export class LoginService {
     }
 
 
+  }
+
+  logout() {
+    localStorage.clear();
+    this.routes.navigate(["/login"]);
   }
 }
 

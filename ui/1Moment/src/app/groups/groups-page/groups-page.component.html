@@ -1,9 +1,6 @@
 <div fxFlexFill fxLayout="column" style="display: flex" *ngIf="!isFetching">
   <mat-toolbar color="primary">
-    <button style="margin-right: 5px" mat-icon-button (click)="onGoBack()">
-      <mat-icon matTooltip="Go back">fast_rewind</mat-icon>
-    </button>
-    <span>Loged as {{user}}</span>
+    <span>Loged as {{user.username}}</span>
     <span fxFlex></span>
     <button mat-icon-button (click)="onLogout()">
       <mat-icon matTooltip="Logout">
