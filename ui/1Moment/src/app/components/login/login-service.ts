@@ -4,6 +4,8 @@ import { BehaviorSubject } from 'rxjs';
 import {User} from "./User";
 import {Router} from "@angular/router";
 
+const TOKEN_REFRESH_TIMEOUT = 100000;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,7 +27,7 @@ export class LoginService {
     localStorage.setItem("user", JSON.stringify(this.user.getValue()));
     setTimeout(() => {
       this.refreshToken();
-    }, 300000);
+    }, TOKEN_REFRESH_TIMEOUT);
   }
 
   public refreshToken(){
@@ -38,7 +40,7 @@ export class LoginService {
         .subscribe({next: () => {
           setTimeout(() => {
             this.refreshToken();
-          }, 300000);
+          }, TOKEN_REFRESH_TIMEOUT);
           }, error: () => {
             localStorage.clear();
             this.routes.navigate(["/login"]);
