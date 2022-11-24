@@ -3,6 +3,8 @@ import {ActivatedRoute} from "@angular/router";
 import {GroupService} from "../group.service";
 import {Group} from "./Group";
 import {Router} from "@angular/router";
+import {User} from "../../components/login/User";
+import {LoginService} from "../../components/login/login-service";
 
 @Component({
   selector: 'app-groups-page',
@@ -14,32 +16,15 @@ export class GroupsPageComponent implements OnInit {
   groups : Group[] = [];
   isFetching: boolean = false;
   error: boolean = false;
-  user = "Ion";
+  user:User={};
   searchTerm = '';
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private groupService: GroupService, private router: Router, private loginService: LoginService) { }
 
   ngOnInit(): void {
-    // this.route.params.subscribe(
-    //   (params:Params)=>{
-    //     this.group.id= params['id'];
-    //   }
-    // )
-    this.groups= [
-      {
-        id:1,
-        name:"Group1"
-      },
-      {
-        id:2,
-        name:"Group2"
-      },
-      {
-        id:3,
-        name:"Group3"
-      },
-    ];
-
+    this.isFetching=true;
+    this.loginService.user.subscribe(value => this.user=value);
+    this.groupService.getGroups().subscribe(value => {this.groups= value; this.isFetching=false}, () =>{ this.error= true; this.isFetching=false});
     if(this.error){
       this.router.navigate(['/error']);
     }
@@ -50,7 +35,7 @@ export class GroupsPageComponent implements OnInit {
   }
 
   onLogout(){
-    throw new Error('Method not implemented.');
+    this.loginService.logout();
   }
 
   onSubscribe(group: Group) {
