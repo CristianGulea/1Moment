@@ -53,11 +53,10 @@ export class GroupsPageComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
 
-  onSubscribe(group: Group){
-    this.router.navigate(['group/:id']),{
-      queryParams: {id: group.id}
-    }
+  onSubscribe(group: Group) {
+    this.router.navigate(['group/', group.id])
   }
+
 
   onGoBack(){
     throw new Error('Method not implemented.');
