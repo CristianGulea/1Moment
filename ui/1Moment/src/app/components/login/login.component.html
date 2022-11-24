@@ -1,4 +1,10 @@
 <div class="container-fluid border h-100">
+  <div class="alert alert-danger" id="alertLogin" role="alert" *ngIf="hideAlert">
+    <h5 id="textAlert">Sorry, your password or username was incorrect. Please double-check your password and username.</h5>
+    <button class="border-0" id="closeAlert" (click)="hideAlert = false">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
   <div id="sign-in-row" class="shadow w-50">
     <div class="row text-center">
       <h3 id="login-title">Login</h3>
@@ -6,12 +12,12 @@
     <div class="row w-50 m-auto">
       <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
-        <input matInput required [(ngModel)]="username">
+        <input matInput required [(ngModel)]="username" (change)="hideAlert = false">
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
         <input matInput required [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
-        <button class="border-0 bg-white" mat-icon-button matSuffix (click)="hide = !hide">
+        <button class="border-0 bg-white" mat-icon-button matSuffix (click)="hide = !hide" (change)="hideAlert = false">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
@@ -24,7 +30,7 @@
                 id="login-button"
                 (click)="login()"
                 [disabled]="!username || !password">
-                
+
         Login</button>
       </div>
     </div>
