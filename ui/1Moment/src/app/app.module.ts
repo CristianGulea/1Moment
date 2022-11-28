@@ -4,7 +4,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
 import {RouterModule, Routes} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {GroupDiscussionPageComponent} from './groups/group-discussion-page/group-discussion-page.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -21,11 +21,12 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {HttpClientModule} from "@angular/common/http";
 import {GroupsPageComponent} from './groups/groups-page/groups-page.component';
 import {AuthGuard} from "./components/login/auth-guard";
+import { SignupComponent } from './components/signup/signup.component';
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: LoginComponent},
+  {path: 'register', component: SignupComponent},
   {path: '', redirectTo: '/groups', pathMatch: 'full'},
   {
     path: '', canActivate: [AuthGuard], children: [
@@ -40,7 +41,8 @@ const routes: Routes = [
     AppComponent,
     GroupDiscussionPageComponent,
     LoginComponent,
-    GroupsPageComponent
+    GroupsPageComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,8 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    ReactiveFormsModule
   ],
   exports: [RouterModule],
   providers: [],
