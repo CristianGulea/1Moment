@@ -58,5 +58,12 @@ export class LoginService {
     localStorage.clear();
     this.routes.navigate(["/login"]);
   }
+
+  signup(user:User){
+    return this.http.post('http://localhost:8080/user',
+      { username: user.username, password:user.password},
+      {headers: new HttpHeaders({'Content-Type': 'application/json'})}
+      )
+  }
 }
 

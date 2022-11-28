@@ -1,0 +1,55 @@
+<div class="container-fluid border h-100" *ngIf="!isLoading">
+  <div id="sign-in-row" class="shadow w-50">
+    <br>
+    <button style="margin-left: 10px"
+      routerLink="/login"
+      id="sign-up-button"
+      class="border-0 bg-opacity-0">
+      Back to login</button>
+    <div class="row text-center">
+      <h3 id="login-title">Register</h3>
+      <mat-error *ngIf="isError" style="margin-bottom: 5px">
+        Some error occured!
+      </mat-error>
+    </div>
+    <form  id="signup" (ngSubmit)="createAccount()" class="row w-50 m-auto" [formGroup]="signUp">
+      <mat-form-field appearance="outline">
+        <mat-label>Chose a username</mat-label>
+        <input matInput formControlName="username" minlength="4">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password"  minlength="5" [type]="hide ? 'password' : 'text'">
+        <button class="border-0 bg-white" mat-icon-button matSuffix (click)="hide = !hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Check password</mat-label>
+        <input matInput formControlName="confirmPassword" minlength="5" [type]="hide ? 'password' : 'text'" >
+        <button class="border-0 bg-white" mat-icon-button matSuffix (click)="hide = !hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-error *ngIf="passwordMatchError">
+        Password does not match
+      </mat-error>
+    </form>
+    <div class="row w-50 m-auto">
+      <div id="login-button-container" class="row d-flex justify-content-center">
+        <button
+          mat-button
+          class="btn border rounded-pill"
+          id="login-button"
+          form="signup"
+          type="submit"
+          [disabled]="signUp.invalid">
+          Create account
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div fxFlexFill fxLayout="column" fxLayoutAlign="center center" *ngIf="isLoading">
+  <mat-spinner style="align-content: center"></mat-spinner>
+</div>
