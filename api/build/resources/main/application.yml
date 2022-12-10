@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/moment
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+jwt:
+  secret: thisisthebiggestsecretnobodygonnafindout
+  accessTokenExpiration: 86400000
+  refreshTokenExpiration: 604800000
