@@ -25,4 +25,12 @@ export class GroupService{
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer '+this.user.accessToken})
     });
   }
+
+  getSearchedGroups(groupName: string){
+    return this.http.get<Group[]>('http://localhost:8080/group', {
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + this.user.accessToken}),
+      params: new HttpParams().set('groupName', groupName)
+    });
+  }
+
 }

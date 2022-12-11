@@ -30,10 +30,6 @@ export class GroupsPageComponent implements OnInit {
     }
   }
 
-  onLike(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
-
   onLogout(){
     this.loginService.logout();
   }
@@ -42,12 +38,17 @@ export class GroupsPageComponent implements OnInit {
     this.router.navigate(['group/', group.id])
   }
 
-
   onGoBack(){
-    throw new Error('Method not implemented.');
+    this.router.navigate(['login'])
   }
 
-  searchGroup(searchTerm: string) {
-    throw new Error('Method not implemented.');
+  searchGroup(groupName: string) {
+    this.groupService.getSearchedGroups(groupName).subscribe(
+      value => {this.groups= value; this.isFetching=false},
+      () =>{ this.error= true; this.isFetching=false}
+    );
+    if(this.error){
+      this.router.navigate(['/error']);
+    }
   }
 }
