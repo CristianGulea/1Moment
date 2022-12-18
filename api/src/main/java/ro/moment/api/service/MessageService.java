@@ -9,6 +9,7 @@ import ro.moment.api.repository.LikeRepository;
 import ro.moment.api.repository.MessageRepository;
 import ro.moment.api.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,8 @@ public class MessageService {
         message.getUser().setId(userId);
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
+
+        message.setCreatedDate(LocalDate.now());
         messageRepository.save(message);
     }
 

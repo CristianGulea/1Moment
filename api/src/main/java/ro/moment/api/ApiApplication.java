@@ -14,7 +14,9 @@ import ro.moment.api.domain.User;
 import ro.moment.api.repository.GroupRepository;
 import ro.moment.api.repository.MessageRepository;
 import ro.moment.api.repository.UserRepository;
+import ro.moment.api.service.MessageService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
@@ -58,21 +60,21 @@ public class ApiApplication {
         groupRepo.save(group5);
         groupRepo.save(group6);
 
-        Message m1 = new Message(user2, group1, "Semetrul I...", "Doar atat");
-        Message m2 = new Message(user3, group1, "Atentie!", "Va multumesc pentru atentie!");
-        Message m3 = new Message(user4, group1, "Tema aceasta", "Inca nu am terminat-o");
-        Message m4 = new Message(user5, group2, "Anul viitor", "De abia astept urmatorul an");
-        Message m5 = new Message(user5, group2, "Unde ne intalnim?", "");
-        Message m6 = new Message(user5, group2, "Ne mai intalnim?", "Lumea nu pare prea activa pe aici...");
-        Message m7 = new Message(user2, group3, "Workshop", "Urmatoarea intalnire va fi pe...");
-        Message m8 = new Message(user3, group3, "Proiecte", "Imi plac proiectele tuturor");
-        Message m9 = new Message(user2, group5, "PDM", "Ma ajutati cu tema?");
-        Message m10 = new Message(user3, group5, "Banchet", "yey");
-        Message m11 = new Message(user4, group5, "LFTC", "BISON");
-        Message m12 = new Message(user5, group5, "PPD", "Thread");
-        Message m13 = new Message(user4, group6, "Craciun", "Imi plac colindele");
-        Message m14 = new Message(user4, group6, "[object Object]", "[object Object]");
-        Message m15 = new Message(user4, group6, "{genericPostText}", "{genericPostBody}");
+        Message m1 = new Message(user2, group1, "Semetrul I...", "Doar atat", LocalDateTime.now());
+        Message m2 = new Message(user3, group1, "Atentie!", "Va multumesc pentru atentie!", LocalDateTime.now());
+        Message m3 = new Message(user4, group1, "Tema aceasta", "Inca nu am terminat-o", LocalDateTime.now());
+        Message m4 = new Message(user5, group2, "Anul viitor", "De abia astept urmatorul an", LocalDateTime.now());
+        Message m5 = new Message(user5, group2, "Unde ne intalnim?", "", LocalDateTime.now());
+        Message m6 = new Message(user5, group2, "Ne mai intalnim?", "Lumea nu pare prea activa pe aici...", LocalDateTime.now());
+        Message m7 = new Message(user2, group3, "Workshop", "Urmatoarea intalnire va fi pe...", LocalDateTime.now());
+        Message m8 = new Message(user3, group3, "Proiecte", "Imi plac proiectele tuturor", LocalDateTime.now());
+        Message m9 = new Message(user2, group5, "PDM", "Ma ajutati cu tema?", LocalDateTime.now());
+        Message m10 = new Message(user3, group5, "Banchet", "yey", LocalDateTime.now());
+        Message m11 = new Message(user4, group5, "LFTC", "BISON", LocalDateTime.now());
+        Message m12 = new Message(user5, group5, "PPD", "Thread", LocalDateTime.now());
+        Message m13 = new Message(user4, group6, "Craciun", "Imi plac colindele", LocalDateTime.now());
+        Message m14 = new Message(user4, group6, "[object Object]", "[object Object]", LocalDateTime.now().plusMinutes(1));
+        Message m15 = new Message(user4, group6, "{genericPostText}", "{genericPostBody}", LocalDateTime.now().plusMinutes(1));
 
         messageRepo.save(m1);
         messageRepo.save(m2);
@@ -92,10 +94,12 @@ public class ApiApplication {
     }
 
     @Bean
-    public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo) {
+    public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, MessageService messageService) {
         return (args) -> {
             //run if you want to populate the database
-            //initDB(userRepo, groupRepo, messageRepo);
+            initDB(userRepo, groupRepo, messageRepo);
+
+            System.out.println(messageService.findAll().size());
         };
     }
 }
