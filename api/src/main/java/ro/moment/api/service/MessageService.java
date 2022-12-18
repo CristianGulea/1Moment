@@ -9,6 +9,7 @@ import ro.moment.api.repository.LikeRepository;
 import ro.moment.api.repository.MessageRepository;
 import ro.moment.api.repository.UserRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,19 +27,13 @@ public class MessageService {
     }
 
     public List<MessageDto> findAll() {
-        List<Message> messages = messageRepository.findAll();
-        List<MessageDto> dtos = new ArrayList<MessageDto>();
-
-        messages.forEach(m -> dtos.add(new MessageDto(m)));
-        return dtos;
+        List<Message> messages = messageRepository.findByPublishDateBefore(LocalDateTime.now());
+        return convertToMessageDTOs(messages);
     }
 
     public List<MessageDto> findMessageByGroupId(Long id) {
-        List<Message> messages = messageRepository.findMessageByGroupId(id);
-        List<MessageDto> dtos = new ArrayList<MessageDto>();
-
-        messages.forEach(m -> dtos.add(new MessageDto(m)));
-        return dtos;
+        List<Message> messages = messageRepository.findByPublishDateBeforeAndGroup_Id(LocalDateTime.now(),id);
+        return convertToMessageDTOs(messages);
     }
 
     public MessageDto findById(Long id) {
@@ -59,5 +54,11 @@ public class MessageService {
 
     public void deleteById(Long id) {
         messageRepository.deleteById(id);
+    }
+
+    private List<MessageDto> convertToMessageDTOs(List<Message> messages){
+        List<MessageDto> dtos = new ArrayList<MessageDto>();
+        messages.forEach(m -> dtos.add(new MessageDto(m)));
+        return dtos;
     }
 }
