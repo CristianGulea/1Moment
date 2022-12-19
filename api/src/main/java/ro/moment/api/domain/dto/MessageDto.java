@@ -24,6 +24,7 @@ public class MessageDto extends BaseEntityDto {
             this.groupId = entity.getGroup().getId();
             this.title = entity.getTitle();
             this.content = entity.getContent();
+
         }
     }
 
