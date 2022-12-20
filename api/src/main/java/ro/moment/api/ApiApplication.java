@@ -130,6 +130,7 @@ public class ApiApplication {
             //run if you want to populate the database
             //initDB(userRepo, groupRepo, messageRepo, subscriptionRepo, likeRepo);
 
+            /*
             System.out.println(messageService.findMessagesByParenMessageId(12L).get(0).getContent());
             System.out.println("Test OK");
 
@@ -167,6 +168,8 @@ public class ApiApplication {
             if (mostPopulareMessagesShowForUser5.size() == 0){
                 System.out.println("Da x2");
             }
+
+             */
 
         };
     }
