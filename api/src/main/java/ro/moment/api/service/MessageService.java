@@ -7,7 +7,13 @@ import ro.moment.api.domain.Subscription;
 import ro.moment.api.domain.dto.MessageDto;
 import ro.moment.api.repository.*;
 
+
 import java.util.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -23,19 +29,13 @@ public class MessageService {
     }
 
     public List<MessageDto> findAll() {
-        List<Message> messages = messageRepository.findAll();
-        List<MessageDto> dtos = new ArrayList<MessageDto>();
-
-        messages.forEach(m -> dtos.add(new MessageDto(m)));
-        return dtos;
+        List<Message> messages = messageRepository.findByPublishDateBefore(LocalDateTime.now());
+        return convertToMessageDTOs(messages);
     }
 
     public List<MessageDto> findMessageByGroupId(Long id) {
-        List<Message> messages = messageRepository.findMessageByGroupId(id);
-        List<MessageDto> dtos = new ArrayList<MessageDto>();
-
-        messages.forEach(m -> dtos.add(new MessageDto(m)));
-        return dtos;
+        List<Message> messages = messageRepository.findByPublishDateBeforeAndGroup_Id(LocalDateTime.now(),id);
+        return convertToMessageDTOs(messages);
     }
 
 
@@ -52,12 +52,15 @@ public class MessageService {
         message.getUser().setId(userId);
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
+
+        message.setCreatedDate(LocalDate.now());
         messageRepository.save(message);
     }
 
     public void deleteById(Long id) {
         messageRepository.deleteById(id);
     }
+
 
     public List<MessageDto> findMessagesByParenMessageId(Long id) {
         List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
@@ -98,10 +101,14 @@ public class MessageService {
 
     public List<MessageDto> findAllByUserIdDtos(Long id){
         List<Message> messages = findAllByUserId(id);
+
+    private List<MessageDto> convertToMessageDTOs(List<Message> messages){
+
         List<MessageDto> dtos = new ArrayList<MessageDto>();
         messages.forEach(m -> dtos.add(new MessageDto(m)));
         return dtos;
     }
+
 
 
     private MessageDto mostPopularMessageByParentMessageId(Long id) {
@@ -147,5 +154,6 @@ public class MessageService {
         return result;
 
     }
+
 
 }

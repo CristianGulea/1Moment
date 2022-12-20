@@ -6,6 +6,7 @@ import ro.moment.api.domain.Group;
 import ro.moment.api.domain.dto.GroupDto;
 import ro.moment.api.repository.GroupRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,9 @@ public class GroupService {
 
     public void save(GroupDto groupDto) {
         validateGroup(groupDto);
-        groupRepository.save(groupDto.toDomain());
+        Group group = groupDto.toDomain();
+        group.setCreatedDate(LocalDate.now());
+        groupRepository.save(group);
     }
 
     public void deleteById(Long id) {

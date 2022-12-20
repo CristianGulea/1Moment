@@ -7,6 +7,8 @@ import ro.moment.api.domain.Group;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.User;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,6 +17,7 @@ public class MessageDto extends BaseEntityDto {
     private Long groupId;
     private String title;
     private String content;
+    private LocalDateTime publishDate;
 
     public MessageDto(Message entity) {
         super(entity);
@@ -24,6 +27,7 @@ public class MessageDto extends BaseEntityDto {
             this.groupId = entity.getGroup().getId();
             this.title = entity.getTitle();
             this.content = entity.getContent();
+            this.publishDate = entity.getPublishDate();
 
         }
     }
@@ -45,6 +49,7 @@ public class MessageDto extends BaseEntityDto {
         message.setGroup(group);
         message.setTitle(title);
         message.setContent(content);
+        message.setPublishDate(publishDate);
 
         return message;
     }

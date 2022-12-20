@@ -1,19 +1,14 @@
 package ro.moment.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.dto.MessageDto;
-import ro.moment.api.repository.MessageRepository;
 import ro.moment.api.service.MessageService;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @CrossOrigin
 @RestController

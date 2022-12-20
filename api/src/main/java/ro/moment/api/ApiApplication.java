@@ -13,6 +13,7 @@ import ro.moment.api.domain.dto.MessageDto;
 import ro.moment.api.repository.*;
 import ro.moment.api.service.MessageService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
@@ -60,6 +61,7 @@ public class ApiApplication {
         groupRepo.save(group6);
 
 
+
         Message m1 = new Message(user2, group1,null, "Semetrul I...", "Doar atat");
         Message m2 = new Message(user3, group1,null, "Atentie!", "Va multumesc pentru atentie!");
         Message m3 = new Message(user4, group1,null, "Tema aceasta", "Inca nu am terminat-o");
@@ -75,6 +77,7 @@ public class ApiApplication {
         Message m13 = new Message(user4, group6, null,"Craciun", "Imi plac colindele");
         Message m14 = new Message(user4, group6,null, "[object Object]", "[object Object]");
         Message m15 = new Message(user4, group6,null, "{genericPostText}", "{genericPostBody}");
+
 
 
 
@@ -125,6 +128,7 @@ public class ApiApplication {
     }
 
     @Bean
+
     public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, SubscriptionRepository subscriptionRepo, LikeRepository likeRepo, MessageService messageService) {
         return (args) -> {
             //run if you want to populate the database
