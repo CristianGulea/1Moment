@@ -67,6 +67,52 @@ public class MessageController {
     public String userError(Exception e) {//era RepositoryException
         return e.getMessage();
     }
+
+      /*
+    Metoda ce imi returneaza toate mesajele pentru un mesaj parinte
+     */
+
+
+    @RequestMapping(method = RequestMethod.GET, params = "parentId")
+    public ResponseEntity<?> getMessagesByParentMessageId(@RequestParam  String parentId) {
+        System.out.println("Get messages by parent message Id " + parentId);
+
+        List<MessageDto> result = messageService.findMessagesByParenMessageId(Long.valueOf(parentId));
+        return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
+    }
+
+
+
+    /*
+    Metoda ce imi returneaza toate mesajele unui utilizator, din toate grupurile din care face parte
+    Sunt returnate doar mesajele principale (adica cele care nu au un mesaj parinte), nu si comentariile
+   */
+
+    @RequestMapping(method = RequestMethod.GET, params="userId")
+    public ResponseEntity<?> getMessagesForOneUser(@RequestParam  String userId) {
+        System.out.println("Get messages for one user " + userId);
+
+        List<MessageDto> result = messageService.findAllByUserIdDtos(Long.valueOf(userId));
+        return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
+    }
+
+
+
+    /*
+    Metoda ce imi returneaza sub-mesajul (comentariul) cel mai popular al unui mesaj
+    */
+
+    @RequestMapping( method = RequestMethod.GET, params="userIdForLikes" )
+    public ResponseEntity<?> getMostPopularMessageByParentMessageId(@RequestParam  String userIdForLikes) {
+        System.out.println("Get most popular message " + userIdForLikes);
+
+        List<MessageDto> result = messageService.mostPopularMessages(Long.valueOf(userIdForLikes));
+        return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
+    }
+
+
+
+
 }
 
 

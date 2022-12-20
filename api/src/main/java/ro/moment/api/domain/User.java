@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class User extends BaseEntity{
     private String password;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles;
+
 
     public Collection<? extends GrantedAuthority> findAuthorities() {
         return this.getRoles().stream()

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 @Entity (name = "moment_group")
 @AllArgsConstructor
@@ -14,4 +16,5 @@ import javax.persistence.Entity;
 @Setter
 public class Group extends BaseEntity{
     private String name;
+
 }

@@ -28,6 +28,7 @@ public class MessageDto extends BaseEntityDto {
             this.title = entity.getTitle();
             this.content = entity.getContent();
             this.publishDate = entity.getPublishDate();
+
         }
     }
 
