@@ -3,7 +3,9 @@ package ro.moment.api.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.moment.api.domain.Group;
+import ro.moment.api.domain.User;
 import ro.moment.api.domain.dto.GroupDto;
+import ro.moment.api.domain.dto.UserDto;
 import ro.moment.api.repository.GroupRepository;
 
 import java.util.ArrayList;
@@ -36,6 +38,12 @@ public class GroupService {
     public void save(GroupDto groupDto) {
         validateGroup(groupDto);
         groupRepository.save(groupDto.toDomain());
+    }
+
+    //adds a new Member to an existing group
+    public void addMember(GroupDto group, UserDto user){
+        group.toDomain().addUser(user.toDomain());
+        groupRepository.save(group.toDomain());
     }
 
     public void deleteById(Long id) {

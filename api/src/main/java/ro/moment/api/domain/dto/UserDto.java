@@ -7,6 +7,7 @@ import ro.moment.api.domain.Group;
 import ro.moment.api.domain.User;
 
 import java.time.LocalDate;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class UserDto extends BaseEntityDto{
     private String username;
     private String password;
+    private Set<Group> groups = new java.util.LinkedHashSet<>();
 
     public UserDto(Long id, LocalDate createdDate, LocalDate updatedDate, UUID externalId, String username) {
         super(id, createdDate, updatedDate, externalId);
@@ -25,6 +27,7 @@ public class UserDto extends BaseEntityDto{
 
         if (entity != null) {
             this.username = entity.getUsername();
+            this.groups = entity.getGroups();
         }
     }
 

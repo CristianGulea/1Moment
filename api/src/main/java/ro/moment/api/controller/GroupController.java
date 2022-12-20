@@ -5,7 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Group;
+import ro.moment.api.domain.User;
 import ro.moment.api.domain.dto.GroupDto;
+import ro.moment.api.domain.dto.UserDto;
 import ro.moment.api.repository.GroupRepository;
 import ro.moment.api.service.GroupService;
 
@@ -57,6 +59,12 @@ public class GroupController {
             System.out.println("Ctrl Delete group exception");
             return new ResponseEntity<String>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(value = "/enroll", method = RequestMethod.POST)
+    public ResponseEntity<?> addMember(@RequestBody UserDto user, @RequestBody GroupDto group){
+        groupService.addMember(group, user);
+        return new ResponseEntity<Group>(HttpStatus.OK);
     }
 
 

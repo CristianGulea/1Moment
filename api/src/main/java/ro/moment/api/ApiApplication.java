@@ -11,11 +11,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ro.moment.api.domain.Group;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.User;
+import ro.moment.api.domain.dto.GroupDto;
+import ro.moment.api.domain.dto.UserDto;
 import ro.moment.api.repository.GroupRepository;
 import ro.moment.api.repository.MessageRepository;
 import ro.moment.api.repository.UserRepository;
+import ro.moment.api.service.GroupService;
+import ro.moment.api.service.UserService;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication(exclude = {UserDetailsServiceAutoConfiguration.class})
 @EnableJpaRepositories(basePackages = "ro.moment.api.repository")
@@ -32,11 +38,11 @@ public class ApiApplication {
             return;
         }
 
-        User user1 = new User("admin", encoder.encode("admin"),List.of("ADMIN"));
-        User user2 = new User("Horea", encoder.encode("horea"),List.of("USER"));
-        User user3 = new User("Bogdan", encoder.encode("bogdan"),List.of("USER"));
-        User user4 = new User("Maria", encoder.encode("maria"),List.of("USER"));
-        User user5 = new User("Ioan", encoder.encode("ioan"),List.of("USER"));
+        User user1 = new User("admin", encoder.encode("admin"),List.of("ADMIN"), Set.of());
+        User user2 = new User("Horea", encoder.encode("horea"),List.of("USER"), Set.of());
+        User user3 = new User("Bogdan", encoder.encode("bogdan"),List.of("USER"), Set.of());
+        User user4 = new User("Maria", encoder.encode("maria"),List.of("USER"), Set.of());
+        User user5 = new User("Ioan", encoder.encode("ioan"),List.of("USER"), Set.of());
 
         userRepo.save(user1);
         userRepo.save(user2);
@@ -44,12 +50,12 @@ public class ApiApplication {
         userRepo.save(user4);
         userRepo.save(user5);
 
-        Group group1 = new Group("Grupa 233");
-        Group group2 = new Group("Revelion 2022-2023");
-        Group group3 = new Group("Proiect colectiv");
-        Group group4 = new Group("Glume");
-        Group group5 = new Group("UBB FMI");
-        Group group6 = new Group("General");
+        Group group1 = new Group("Grupa 233", Set.of());
+        Group group2 = new Group("Revelion 2022-2023", Set.of());
+        Group group3 = new Group("Proiect colectiv", Set.of());
+        Group group4 = new Group("Glume", Set.of());
+        Group group5 = new Group("UBB FMI", Set.of());
+        Group group6 = new Group("General", Set.of());
 
         groupRepo.save(group1);
         groupRepo.save(group2);
@@ -91,11 +97,23 @@ public class ApiApplication {
         messageRepo.save(m15);
     }
 
+    public void test_addMemberToGroup(GroupRepository groupRepo){
+        List<Group> groups = groupRepo.findAll();
+
+        //List<UserDto> users = userRepo.findAll();
+        //groupRepo.addMember(groups.get(1), users.get(1));
+        //groupService.addMember(groups.get(1), users.get(2));
+        //groupService.addMember(groups.get(1), users.get(3));
+        //groups = groupService.findAll();
+        //System.out.println(Arrays.toString(groups.get(1).getUsers().toArray()));
+    }
+
     @Bean
-    public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo) {
+    public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, GroupService groupService, UserService userService) {
         return (args) -> {
             //run if you want to populate the database
             //initDB(userRepo, groupRepo, messageRepo);
+            test_addMemberToGroup(groupRepo);
         };
     }
 }
