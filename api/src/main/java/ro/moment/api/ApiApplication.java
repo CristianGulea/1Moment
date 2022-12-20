@@ -62,21 +62,21 @@ public class ApiApplication {
 
 
 
-        Message m1 = new Message(user2, group1,null, "Semetrul I...", "Doar atat");
-        Message m2 = new Message(user3, group1,null, "Atentie!", "Va multumesc pentru atentie!");
-        Message m3 = new Message(user4, group1,null, "Tema aceasta", "Inca nu am terminat-o");
-        Message m4 = new Message(user5, group2,null, "Anul viitor", "De abia astept urmatorul an");
-        Message m5 = new Message(user5, group2,null, "Unde ne intalnim?", "");
-        Message m6 = new Message(user5, group2,null, "Ne mai intalnim?", "Lumea nu pare prea activa pe aici...");
-        Message m7 = new Message(user2, group3, null,"Workshop", "Urmatoarea intalnire va fi pe...");
-        Message m8 = new Message(user3, group3,null, "Proiecte", "Imi plac proiectele tuturor");
-        Message m9 = new Message(user2, group5,null, "PDM", "Ma ajutati cu tema?");
-        Message m10 = new Message(user3, group5, null,"Banchet", "yey");
-        Message m11 = new Message(user4, group5,null, "LFTC", "BISON");
-        Message m12 = new Message(user5, group5,null, "PPD", "Thread");
-        Message m13 = new Message(user4, group6, null,"Craciun", "Imi plac colindele");
-        Message m14 = new Message(user4, group6,null, "[object Object]", "[object Object]");
-        Message m15 = new Message(user4, group6,null, "{genericPostText}", "{genericPostBody}");
+        Message m1 = new Message(user2, group1,null, "Semetrul I...", "Doar atat", LocalDateTime.now());
+        Message m2 = new Message(user3, group1,null, "Atentie!", "Va multumesc pentru atentie!", LocalDateTime.now());
+        Message m3 = new Message(user4, group1,null, "Tema aceasta", "Inca nu am terminat-o", LocalDateTime.now());
+        Message m4 = new Message(user5, group2,null, "Anul viitor", "De abia astept urmatorul an", LocalDateTime.now());
+        Message m5 = new Message(user5, group2,null, "Unde ne intalnim?", "", LocalDateTime.now());
+        Message m6 = new Message(user5, group2,null, "Ne mai intalnim?", "Lumea nu pare prea activa pe aici...", LocalDateTime.now());
+        Message m7 = new Message(user2, group3, null,"Workshop", "Urmatoarea intalnire va fi pe...", LocalDateTime.now());
+        Message m8 = new Message(user3, group3,null, "Proiecte", "Imi plac proiectele tuturor", LocalDateTime.now());
+        Message m9 = new Message(user2, group5,null, "PDM", "Ma ajutati cu tema?", LocalDateTime.now());
+        Message m10 = new Message(user3, group5, null,"Banchet", "yey", LocalDateTime.now());
+        Message m11 = new Message(user4, group5,null, "LFTC", "BISON", LocalDateTime.now());
+        Message m12 = new Message(user5, group5,null, "PPD", "Thread", LocalDateTime.now());
+        Message m13 = new Message(user4, group6, null,"Craciun", "Imi plac colindele", LocalDateTime.now());
+        Message m14 = new Message(user4, group6,null, "[object Object]", "[object Object]", LocalDateTime.now());
+        Message m15 = new Message(user4, group6,null, "{genericPostText}", "{genericPostBody}", LocalDateTime.now());
 
 
 
@@ -110,10 +110,10 @@ public class ApiApplication {
         subscriptionRepository.save(s4);
         subscriptionRepository.save(s5);
 
-        Message m16 = new Message(user1, group1, m1, "TestParentM16", "TestParentM16");
+        Message m16 = new Message(user1, group1, m1, "TestParentM16", "TestParentM16", LocalDateTime.now());
         messageRepo.save(m16);
 
-        Message m17 = new Message(user1, group1, m1, "TestParentM17", "TestParentM17");
+        Message m17 = new Message(user1, group1, m1, "TestParentM17", "TestParentM17", LocalDateTime.now());
         messageRepo.save(m17);
 
         Like l1 = new Like(user1, m17);

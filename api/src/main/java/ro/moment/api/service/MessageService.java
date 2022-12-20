@@ -99,11 +99,12 @@ public class MessageService {
     }
 
 
-    public List<MessageDto> findAllByUserIdDtos(Long id){
+    public List<MessageDto> findAllByUserIdDtos(Long id) {
         List<Message> messages = findAllByUserId(id);
+        return convertToMessageDTOs(messages);
+    }
 
-    private List<MessageDto> convertToMessageDTOs(List<Message> messages){
-
+    private List<MessageDto> convertToMessageDTOs(List<Message> messages) {
         List<MessageDto> dtos = new ArrayList<MessageDto>();
         messages.forEach(m -> dtos.add(new MessageDto(m)));
         return dtos;
