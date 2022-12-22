@@ -42,8 +42,9 @@ public class GroupService {
 
     //adds a new Member to an existing group
     public void addMember(GroupDto group, UserDto user){
-        group.toDomain().addUser(user.toDomain());
-        groupRepository.save(group.toDomain());
+        Group groupDomain = group.toDomain();
+        groupDomain.addUser(user.toDomain());
+        groupRepository.save(groupDomain);
     }
 
     public void deleteById(Long id) {

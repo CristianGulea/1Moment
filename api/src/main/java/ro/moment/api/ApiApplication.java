@@ -97,15 +97,13 @@ public class ApiApplication {
         messageRepo.save(m15);
     }
 
-    public void test_addMemberToGroup(GroupRepository groupRepo){
+    public void test_addMemberToGroup(GroupRepository groupRepo, UserRepository userRepo, GroupService groupService){
         List<Group> groups = groupRepo.findAll();
+        List<User> users = userRepo.findAll();
 
-        //List<UserDto> users = userRepo.findAll();
-        //groupRepo.addMember(groups.get(1), users.get(1));
-        //groupService.addMember(groups.get(1), users.get(2));
-        //groupService.addMember(groups.get(1), users.get(3));
-        //groups = groupService.findAll();
-        //System.out.println(Arrays.toString(groups.get(1).getUsers().toArray()));
+        groupService.addMember(new GroupDto(groups.get(1)), new UserDto(users.get(1)));
+        groups = groupRepo.findAll();
+        System.out.println(Arrays.toString(groups.get(1).getUsers().toArray()));
     }
 
     @Bean
@@ -113,7 +111,7 @@ public class ApiApplication {
         return (args) -> {
             //run if you want to populate the database
             //initDB(userRepo, groupRepo, messageRepo);
-            test_addMemberToGroup(groupRepo);
+            test_addMemberToGroup(groupRepo, userRepo, groupService);
         };
     }
 }
