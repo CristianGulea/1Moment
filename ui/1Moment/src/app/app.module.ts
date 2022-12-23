@@ -1,3 +1,5 @@
+
+
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
@@ -22,11 +24,13 @@ import {HttpClientModule} from "@angular/common/http";
 import {GroupsPageComponent} from './groups/groups-page/groups-page.component';
 import {AuthGuard} from "./components/login/auth-guard";
 import { SignupComponent } from './components/signup/signup.component';
+import {FeedComponent} from "./components/feed/feed.component";
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: SignupComponent},
+  {path: 'feed', canActivate: [AuthGuard], component: FeedComponent},
   {path: '', redirectTo: '/groups', pathMatch: 'full'},
   {
     path: '', canActivate: [AuthGuard], children: [
@@ -38,6 +42,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    FeedComponent,
     AppComponent,
     GroupDiscussionPageComponent,
     LoginComponent,
@@ -74,3 +79,6 @@ const routes: Routes = [
 })
 export class AppModule {
 }
+
+
+

@@ -50,4 +50,8 @@ export class GroupsPageComponent implements OnInit {
   searchGroup(searchTerm: string) {
     throw new Error('Method not implemented.');
   }
+
+  navigateToFeed() {
+    this.router.navigate(["/feed"]);
+  }
 }

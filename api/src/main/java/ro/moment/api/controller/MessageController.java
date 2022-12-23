@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Message;
+import ro.moment.api.domain.User;
 import ro.moment.api.domain.dto.MessageDto;
 import ro.moment.api.service.MessageService;
+import ro.moment.api.service.UserService;
 
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageService messageService;
+    private final UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public List<MessageDto> getAll() {
@@ -88,11 +91,12 @@ public class MessageController {
     Sunt returnate doar mesajele principale (adica cele care nu au un mesaj parinte), nu si comentariile
    */
 
-    @RequestMapping(method = RequestMethod.GET, params="userId")
-    public ResponseEntity<?> getMessagesForOneUser(@RequestParam  String userId) {
-        System.out.println("Get messages for one user " + userId);
+    @RequestMapping(method = RequestMethod.GET, params="username")
+    public ResponseEntity<?> getMessagesForOneUser(@RequestParam  String username) {
+        User user = this.userService.findUserByUsername(username);
+        System.out.println("Get messages for one user " + username + " and id = " + user.getId());
 
-        List<MessageDto> result = messageService.findAllByUserIdDtos(Long.valueOf(userId));
+        List<MessageDto> result = messageService.findAllByUserIdDtos(user.getId());
         return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
@@ -102,11 +106,12 @@ public class MessageController {
     Metoda ce imi returneaza sub-mesajul (comentariul) cel mai popular al unui mesaj
     */
 
-    @RequestMapping( method = RequestMethod.GET, params="userIdForLikes" )
-    public ResponseEntity<?> getMostPopularMessageByParentMessageId(@RequestParam  String userIdForLikes) {
-        System.out.println("Get most popular message " + userIdForLikes);
+    @RequestMapping( method = RequestMethod.GET, params="usernameForLikes" )
+    public ResponseEntity<?> getMostPopularMessageByParentMessageId(@RequestParam  String usernameForLikes) {
+        User user = this.userService.findUserByUsername(usernameForLikes);
+        System.out.println("Get most popular message " + usernameForLikes);
 
-        List<MessageDto> result = messageService.mostPopularMessages(Long.valueOf(userIdForLikes));
+        List<MessageDto> result = messageService.mostPopularMessages(user.getId());
         return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
@@ -114,5 +119,3 @@ public class MessageController {
 
 
 }
-
-
