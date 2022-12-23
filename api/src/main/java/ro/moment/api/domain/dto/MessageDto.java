@@ -15,9 +15,12 @@ import java.time.LocalDateTime;
 public class MessageDto extends BaseEntityDto {
     private Long userId;
     private Long groupId;
+    private String parentMessageId;
     private String title;
     private String content;
     private LocalDateTime publishDate;
+    private String groupName;
+    private String username;
 
     public MessageDto(Message entity) {
         super(entity);
@@ -28,7 +31,10 @@ public class MessageDto extends BaseEntityDto {
             this.title = entity.getTitle();
             this.content = entity.getContent();
             this.publishDate = entity.getPublishDate();
-
+            this.username = entity.getUser().getUsername();
+            this.groupName = entity.getGroup().getName();
+            if (entity.getParentMessage() == null) this.parentMessageId = "null";
+            else this.parentMessageId = String.valueOf(entity.getParentMessage().getId());
         }
     }
 
