@@ -21,7 +21,7 @@ export class LoginService {
   }
 
   public saveUserToLocalStorage(username: string, password: string, message:Object){
-    let newUser = {username: username, password: "", accessToken: JSON.parse(JSON.stringify(message)).accessToken, refreshToken: JSON.parse(JSON.stringify(message)).refreshToken};
+    let newUser = {id: 1, username: username, password: "", accessToken: JSON.parse(JSON.stringify(message)).accessToken, refreshToken: JSON.parse(JSON.stringify(message)).refreshToken};
     this.user.next(newUser);
     console.log(this.user);
     localStorage.setItem("user", JSON.stringify(this.user.getValue()));
@@ -38,9 +38,9 @@ export class LoginService {
       this.http.post('http://localhost:8080/user/refresh', {refreshToken: refreshToken}, {
         headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken })})
         .subscribe({next: () => {
-          setTimeout(() => {
-            this.refreshToken();
-          }, TOKEN_REFRESH_TIMEOUT);
+            setTimeout(() => {
+              this.refreshToken();
+            }, TOKEN_REFRESH_TIMEOUT);
           }, error: () => {
             localStorage.clear();
             this.routes.navigate(["/login"]);
@@ -63,7 +63,6 @@ export class LoginService {
     return this.http.post('http://localhost:8080/user',
       { username: user.username, password:user.password},
       {headers: new HttpHeaders({'Content-Type': 'application/json'})}
-      )
+    )
   }
 }
-
