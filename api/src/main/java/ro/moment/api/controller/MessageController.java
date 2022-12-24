@@ -48,7 +48,7 @@ public class MessageController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody MessageDto message) {
-        messageService.save(message);
+        message = messageService.save(message);
         return new ResponseEntity<MessageDto>(message, HttpStatus.CREATED);
 
     }
