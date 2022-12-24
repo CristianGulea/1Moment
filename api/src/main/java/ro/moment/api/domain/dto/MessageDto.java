@@ -33,6 +33,8 @@ public class MessageDto extends BaseEntityDto {
             this.publishDate = entity.getPublishDate();
             this.username = entity.getUser().getUsername();
             this.groupName = entity.getGroup().getName();
+
+            // just why?! isn't Long good enough for you?
             if (entity.getParentMessage() == null) this.parentMessageId = "null";
             else this.parentMessageId = String.valueOf(entity.getParentMessage().getId());
         }
@@ -56,6 +58,10 @@ public class MessageDto extends BaseEntityDto {
         message.setTitle(title);
         message.setContent(content);
         message.setPublishDate(publishDate);
+
+        Message parent = new Message();
+        parent.setId(Long.parseLong(this.parentMessageId));
+        message.setParentMessage(parent);
 
         return message;
     }
