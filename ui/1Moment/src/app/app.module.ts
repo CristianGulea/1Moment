@@ -25,12 +25,14 @@ import {GroupsPageComponent} from './groups/groups-page/groups-page.component';
 import {AuthGuard} from "./components/login/auth-guard";
 import { SignupComponent } from './components/signup/signup.component';
 import {FeedComponent} from "./components/feed/feed.component";
+import {CommentPageComponent} from "./components/comment-page/comment-page.component";
 
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: SignupComponent},
   {path: 'feed', canActivate: [AuthGuard], component: FeedComponent},
+  {path: 'comments', component: CommentPageComponent},
   {path: '', redirectTo: '/groups', pathMatch: 'full'},
   {
     path: '', canActivate: [AuthGuard], children: [
@@ -42,6 +44,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
+    CommentPageComponent,
     FeedComponent,
     AppComponent,
     GroupDiscussionPageComponent,

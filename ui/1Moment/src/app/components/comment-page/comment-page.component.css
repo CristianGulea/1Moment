@@ -1,0 +1,27 @@
+.date-text{
+  font-size: 11px;
+  float: right;
+  color: darkgrey;
+}
+
+.post-detail{
+  padding-bottom: 15px;
+  font-size: 11px;
+  color: darkgrey;
+}
+
+mat-card-title{
+  color: dimgray;
+  padding-top: 0.5%;
+}
+
+mat-card-content{
+  color: dimgray;
+  padding-top: 1%;
+}
+
+textarea:focus {
+  outline: none !important;
+  border:1px solid #673AB7;
+  box-shadow: 0 0 5px #673AB7;
+}
