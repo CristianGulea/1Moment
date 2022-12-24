@@ -9,10 +9,10 @@
     </button>
   </mat-toolbar>
   <mat-card style="margin-left: 5%; margin-right: 5%; margin-top: 3%;">
-    <div class="post-detail">{{"General"}}・Posted by {{"Cristian"}}  <span class="date-text">{{"12/12/2021"}}</span></div>
-    <mat-card-title>{{"Review-uri false la Altex?"}}</mat-card-title>
+    <div class="post-detail">{{currentDiscussion.groupName}}・Posted by {{currentDiscussion.username}}  <span class="date-text">{{currentDiscussion.publishDate}}</span></div>
+    <mat-card-title>{{currentDiscussion.title}}</mat-card-title>
     <mat-card-content>
-      <span>{{"Doar mie mi se par ca 90% din aceste recenzi sunt false? Toate folosesc acelasi expresii: “62000 rotati, 14 zile bateria, technolgia X”."}}</span>
+      <span>{{currentDiscussion.content}}</span>
     </mat-card-content>
     <mat-card-content>
       <textarea style="padding-left: 1%; padding-top: 0.5%; min-height: 100px; min-width: 100%;" placeholder="What are your thoughts?"></textarea>
@@ -21,11 +21,11 @@
     <mat-card-content style="padding-top: 8%">
       <hr>
       <mat-list fxLayout="column" fxLayoutGap="20px">
-        <mat-card fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let comment of comments">
           <div class="container-fluid">
-            <div class="post-detail">Posted by {{"Cristian"}}  <span class="date-text">{{"12/01/2022"}}</span></div>
+            <div class="post-detail">Posted by {{comment.username}}  <span class="date-text">{{comment.publishDate}}</span></div>
             <mat-card-content>
-              {{"Review la aparat de tuns barba cumparat recent: \"Foarte ok acest telefon. Hmmm... oare nu il folosesc eu cum trebuie?"}}
+              {{comment.content}}
             </mat-card-content>
             <mat-card-content>
               <button mat-icon-button><mat-icon>favorite_border</mat-icon></button>
@@ -33,21 +33,6 @@
             </mat-card-content>
           </div>
         </mat-card>
-
-        <mat-card fxLayout="row" fxLayoutAlign="space-between">
-          <div class="container-fluid">
-            <div class="post-detail">Posted by {{"Cristian"}}  <span class="date-text">{{"12/01/2022"}}</span></div>
-            <mat-card-content>
-              {{"Review la aparat de tuns barba cumparat recent: \"Foarte ok acest telefon. Hmmm... oare nu il folosesc eu cum trebuie?"}}
-            </mat-card-content>
-            <mat-card-content>
-              <button mat-icon-button><mat-icon>favorite</mat-icon></button>
-              <span>{{"11"}}</span>
-            </mat-card-content>
-          </div>
-        </mat-card>
-
-
       </mat-list>
     </mat-card-content>
   </mat-card>
