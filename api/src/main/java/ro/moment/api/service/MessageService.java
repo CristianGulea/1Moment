@@ -45,16 +45,17 @@ public class MessageService {
         return message.map(MessageDto::new).orElse(null);
     }
 
-    public void save(MessageDto messageDto) {
+    public MessageDto save(MessageDto messageDto) {
         validateMessage(messageDto);
         Message message = messageDto.toDomain();
         Long userId = messageDto.getUserId();       //todo: validate this
         message.getUser().setId(userId);
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
-
         message.setCreatedDate(LocalDate.now());
-        messageRepository.save(message);
+
+        message = messageRepository.save(message);
+        return new MessageDto(message);
     }
 
     public void deleteById(Long id) {
