@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import {User} from "./User";
 import {Router} from "@angular/router";
 
-const TOKEN_REFRESH_TIMEOUT = 100000;
+const TOKEN_REFRESH_TIMEOUT = 600000;
 
 @Injectable({
   providedIn: 'root',
@@ -20,8 +20,8 @@ export class LoginService {
       headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
-  public saveUserToLocalStorage(username: string, password: string, message:Object){
-    let newUser = {id: 1, username: username, password: "", accessToken: JSON.parse(JSON.stringify(message)).accessToken, refreshToken: JSON.parse(JSON.stringify(message)).refreshToken};
+  public saveUserToLocalStorage(username: string, password: string, message:User){
+    let newUser = {id: message.id, username: username, password: "", accessToken: JSON.parse(JSON.stringify(message)).accessToken, refreshToken: JSON.parse(JSON.stringify(message)).refreshToken};
     this.user.next(newUser);
     console.log(this.user);
     localStorage.setItem("user", JSON.stringify(this.user.getValue()));

@@ -14,7 +14,7 @@
   </mat-toolbar>
   <mat-list class="discussion-list" fxLayout="column" fxLayoutGap="20px">
 
-    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages">
+    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages" (click)="onDiscutionSelected(message.id)" >
       <div>
         <mat-card-title>{{message.title}}</mat-card-title>
         <mat-card-content>

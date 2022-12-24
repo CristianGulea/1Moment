@@ -1,6 +1,6 @@
-<div fxFlexFill fxLayout="column" style="display: flex">
+<div fxFlexFill fxLayout="column" style="display: flex" *ngIf="!isLoading">
   <mat-toolbar class="shadow" color="primary">
-    <span (click)="navigateDiscussionPage()"><mat-icon>arrow_back</mat-icon></span>
+    <!--    <span (click)="navigateDiscussionPage()"><mat-icon>arrow_back</mat-icon></span>-->
     <span fxFlex></span>
     <button mat-icon-button (click)="onLogout()">
       <mat-icon matTooltip="Logout">
@@ -9,26 +9,36 @@
     </button>
   </mat-toolbar>
   <mat-card style="margin-left: 5%; margin-right: 5%; margin-top: 3%;">
-    <div class="post-detail">{{currentDiscussion.groupName}}・Posted by {{currentDiscussion.username}}  <span class="date-text">{{currentDiscussion.publishDate}}</span></div>
+    <div class="post-detail">{{currentDiscussion.groupName}}・Posted by {{currentDiscussion.username}}  <span
+      class="date-text">{{currentDiscussion.publishDate.toLocaleDateString("en-US")}}</span></div>
     <mat-card-title>{{currentDiscussion.title}}</mat-card-title>
     <mat-card-content>
       <span>{{currentDiscussion.content}}</span>
     </mat-card-content>
     <mat-card-content>
-      <textarea style="padding-left: 1%; padding-top: 0.5%; min-height: 100px; min-width: 100%;" placeholder="What are your thoughts?"></textarea>
-      <button style=" color: dimgray; border-radius: 25px; float: right" mat-raised-button>Comment</button>
+      <form #addCommentForm="ngForm" (ngSubmit)="addComment(addCommentForm)">
+        <textarea name="comment" ngModel
+                  style="padding-left: 1%; padding-top: 0.5%; min-height: 100px; min-width: 100%;"
+                  placeholder="What are your thoughts?"></textarea>
+        <button style=" color: dimgray; border-radius: 25px; float: right" mat-raised-button type="submit">
+          Comment
+        </button>
+      </form>
     </mat-card-content>
     <mat-card-content style="padding-top: 8%">
       <hr>
       <mat-list fxLayout="column" fxLayoutGap="20px">
         <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let comment of comments">
           <div class="container-fluid">
-            <div class="post-detail">Posted by {{comment.username}}  <span class="date-text">{{comment.publishDate}}</span></div>
+            <div class="post-detail">Posted by {{comment.username}}  <span
+              class="date-text">{{comment.publishDate.toLocaleDateString("en-US")}}</span></div>
             <mat-card-content>
               {{comment.content}}
             </mat-card-content>
             <mat-card-content>
-              <button mat-icon-button><mat-icon>favorite_border</mat-icon></button>
+              <button mat-icon-button>
+                <mat-icon>favorite_border</mat-icon>
+              </button>
               <span>{{"31"}}</span>
             </mat-card-content>
           </div>
@@ -36,4 +46,7 @@
       </mat-list>
     </mat-card-content>
   </mat-card>
+</div>
+<div fxFlexFill fxLayout="column" fxLayoutAlign="center center" *ngIf="isLoading && !isError">
+  <mat-spinner style="align-content: center"></mat-spinner>
 </div>

@@ -32,7 +32,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: SignupComponent},
   {path: 'feed', canActivate: [AuthGuard], component: FeedComponent},
-  {path: 'comments', component: CommentPageComponent},
+  {path: 'comments/:id',canActivate: [AuthGuard], component: CommentPageComponent},
   {path: '', redirectTo: '/groups', pathMatch: 'full'},
   {
     path: '', canActivate: [AuthGuard], children: [

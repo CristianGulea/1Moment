@@ -3,10 +3,10 @@ export interface Message{
   userId: number,
   groupId: number,
   parentMessageId: string,
-  title: string,
+  title?: string,
   content: string,
   publishDate: Date,
-  username: string,
-  groupName: string;
+  username?: string,
+  groupName?: string;
 }
 
