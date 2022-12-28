@@ -1,0 +1,29 @@
+<div fxFlexFill fxLayout="column" style="display: flex">
+  <mat-toolbar class="shadow" color="primary">
+    <span (click)="navigateGroupPage()"><mat-icon>arrow_back</mat-icon></span>
+    <span fxFlex></span>
+    <button mat-icon-button (click)="onLogout()">
+      <mat-icon matTooltip="Logout">
+        logout
+      </mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-list fxLayout="column" fxLayoutGap="20px" style="overflow: auto">
+    <mat-card class="shadow" fxLayout="row" fxLayoutAlign="space-between"  *ngFor="let discussion of discussions">
+      <div class="container-fluid">
+        <div class="post-detail">{{discussion.groupName}}・Posted by {{discussion.username}}  <span class="date-text">{{discussion.publishDate}}</span></div>
+        <mat-card-title>
+          <span class="title-text">{{discussion.title}}</span>
+        </mat-card-title>
+        <mat-card-content class="question-text">
+          {{discussion.content}}
+        </mat-card-content>
+        <hr class="w-100" *ngIf="getPopularComment(discussion.id) != null">
+        <mat-card-content class="comment-text">
+          <span class="comment-information">{{getPopularComment(discussion.id)?.username}}・<span class="date-text">{{getPopularComment(discussion.id)?.publishDate}}</span> </span>
+          {{getPopularComment(discussion.id)?.content}}
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </mat-list>
+</div>

@@ -1,0 +1,51 @@
+#login-button {
+  width: auto;
+}
+
+#login-button-container{
+  margin: 10px;
+}
+
+#login-title {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  color: gray;
+}
+
+#sign-up-container{
+  margin: 15px;
+}
+
+#sign-up-button{
+  background-color: transparent;
+  color: dodgerblue;
+}
+
+#sign-up-row {
+  width: 50%;
+  border-radius: 30px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+#sign-in-row {
+  border-radius: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px
+}
+
+#textAlert{
+  float: left;
+}
+
+#closeAlert{
+  float: right;
+  background-color: #F8D7DA;
+}
+
+#alertLogin{
+  height: 8%;
+}
+

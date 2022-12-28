@@ -1,6 +1,6 @@
 <div fxFlexFill fxLayout="column" style="display: flex" *ngIf="!isFetching">
   <mat-toolbar color="primary">
-    <span>Loged as {{user.username}}</span>
+    <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">person</mat-icon></span>
     <span fxFlex></span>
     <button mat-icon-button (click)="onLogout()">
       <mat-icon matTooltip="Logout">
