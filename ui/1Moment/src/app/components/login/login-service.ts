@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import {User} from "./User";
 import {Router} from "@angular/router";
 
-const TOKEN_REFRESH_TIMEOUT = 100000;
+const TOKEN_REFRESH_TIMEOUT = 10000;
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,7 @@ const TOKEN_REFRESH_TIMEOUT = 100000;
 export class LoginService {
 
   user = new BehaviorSubject<User>({});
+  username: string = "";
 
   constructor(private http: HttpClient, private routes: Router) { }
 
@@ -21,6 +22,7 @@ export class LoginService {
   }
 
   public saveUserToLocalStorage(username: string, password: string, message:Object){
+    this.username = username;
     let newUser = {username: username, password: "", accessToken: JSON.parse(JSON.stringify(message)).accessToken, refreshToken: JSON.parse(JSON.stringify(message)).refreshToken};
     this.user.next(newUser);
     console.log(this.user);
@@ -35,16 +37,23 @@ export class LoginService {
     if (user != null) {
       let refreshToken: String = JSON.parse(user).refreshToken;
       let accessToken: String = JSON.parse(user).accessToken;
-      this.http.post('http://localhost:8080/user/refresh', {refreshToken: refreshToken}, {
-        headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer ' + accessToken })})
-        .subscribe({next: () => {
+      this.http.post('http://localhost:8080/user/refresh', refreshToken, {})
+        .subscribe({next:
+            (response) => {
+
+              this.saveUserToLocalStorage(this.username, "", response)
+
           setTimeout(() => {
             this.refreshToken();
           }, TOKEN_REFRESH_TIMEOUT);
+
+
           }, error: () => {
             localStorage.clear();
             this.routes.navigate(["/login"]);
           }});
+
+
     }
     else{
       localStorage.clear();
