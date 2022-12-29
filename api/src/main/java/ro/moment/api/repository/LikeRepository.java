@@ -9,4 +9,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     boolean existsLikeByUserIdAndMessageId(Long userId, Long messageId);
 
     Long countByMessageId(Long id);
+
 }

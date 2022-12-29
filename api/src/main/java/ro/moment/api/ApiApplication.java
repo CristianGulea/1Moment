@@ -8,12 +8,9 @@ import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServic
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import ro.moment.api.domain.Group;
-import ro.moment.api.domain.Message;
-import ro.moment.api.domain.User;
-import ro.moment.api.repository.GroupRepository;
-import ro.moment.api.repository.MessageRepository;
-import ro.moment.api.repository.UserRepository;
+import ro.moment.api.domain.*;
+import ro.moment.api.domain.dto.MessageDto;
+import ro.moment.api.repository.*;
 import ro.moment.api.service.MessageService;
 
 import java.time.LocalDateTime;
@@ -27,12 +24,15 @@ public class ApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiApplication.class, args);
+
     }
 
-    private void initDB(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo) {
+    private void initDB(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, SubscriptionRepository subscriptionRepository, LikeRepository likeRepository) {
         if (userRepo.count() >= 5) {
             return;
         }
+
+
 
         User user1 = new User("admin", encoder.encode("admin"),List.of("ADMIN"));
         User user2 = new User("Horea", encoder.encode("horea"),List.of("USER"));
@@ -60,21 +60,26 @@ public class ApiApplication {
         groupRepo.save(group5);
         groupRepo.save(group6);
 
-        Message m1 = new Message(user2, group1, "Semetrul I...", "Doar atat", LocalDateTime.now());
-        Message m2 = new Message(user3, group1, "Atentie!", "Va multumesc pentru atentie!", LocalDateTime.now());
-        Message m3 = new Message(user4, group1, "Tema aceasta", "Inca nu am terminat-o", LocalDateTime.now());
-        Message m4 = new Message(user5, group2, "Anul viitor", "De abia astept urmatorul an", LocalDateTime.now());
-        Message m5 = new Message(user5, group2, "Unde ne intalnim?", "", LocalDateTime.now());
-        Message m6 = new Message(user5, group2, "Ne mai intalnim?", "Lumea nu pare prea activa pe aici...", LocalDateTime.now());
-        Message m7 = new Message(user2, group3, "Workshop", "Urmatoarea intalnire va fi pe...", LocalDateTime.now());
-        Message m8 = new Message(user3, group3, "Proiecte", "Imi plac proiectele tuturor", LocalDateTime.now());
-        Message m9 = new Message(user2, group5, "PDM", "Ma ajutati cu tema?", LocalDateTime.now());
-        Message m10 = new Message(user3, group5, "Banchet", "yey", LocalDateTime.now());
-        Message m11 = new Message(user4, group5, "LFTC", "BISON", LocalDateTime.now());
-        Message m12 = new Message(user5, group5, "PPD", "Thread", LocalDateTime.now());
-        Message m13 = new Message(user4, group6, "Craciun", "Imi plac colindele", LocalDateTime.now());
-        Message m14 = new Message(user4, group6, "[object Object]", "[object Object]", LocalDateTime.now().plusMinutes(1));
-        Message m15 = new Message(user4, group6, "{genericPostText}", "{genericPostBody}", LocalDateTime.now().plusMinutes(1));
+
+
+        Message m1 = new Message(user2, group1,null, "Semetrul I...", "Doar atat", LocalDateTime.now());
+        Message m2 = new Message(user3, group1,null, "Atentie!", "Va multumesc pentru atentie!", LocalDateTime.now());
+        Message m3 = new Message(user4, group1,null, "Tema aceasta", "Inca nu am terminat-o", LocalDateTime.now());
+        Message m4 = new Message(user5, group2,null, "Anul viitor", "De abia astept urmatorul an", LocalDateTime.now());
+        Message m5 = new Message(user5, group2,null, "Unde ne intalnim?", "", LocalDateTime.now());
+        Message m6 = new Message(user5, group2,null, "Ne mai intalnim?", "Lumea nu pare prea activa pe aici...", LocalDateTime.now());
+        Message m7 = new Message(user2, group3, null,"Workshop", "Urmatoarea intalnire va fi pe...", LocalDateTime.now());
+        Message m8 = new Message(user3, group3,null, "Proiecte", "Imi plac proiectele tuturor", LocalDateTime.now());
+        Message m9 = new Message(user2, group5,null, "PDM", "Ma ajutati cu tema?", LocalDateTime.now());
+        Message m10 = new Message(user3, group5, null,"Banchet", "yey", LocalDateTime.now());
+        Message m11 = new Message(user4, group5,null, "LFTC", "BISON", LocalDateTime.now());
+        Message m12 = new Message(user5, group5,null, "PPD", "Thread", LocalDateTime.now());
+        Message m13 = new Message(user4, group6, null,"Craciun", "Imi plac colindele", LocalDateTime.now());
+        Message m14 = new Message(user4, group6,null, "[object Object]", "[object Object]", LocalDateTime.now());
+        Message m15 = new Message(user4, group6,null, "{genericPostText}", "{genericPostBody}", LocalDateTime.now());
+
+
+
 
         messageRepo.save(m1);
         messageRepo.save(m2);
@@ -91,15 +96,85 @@ public class ApiApplication {
         messageRepo.save(m13);
         messageRepo.save(m14);
         messageRepo.save(m15);
+
+
+        Subscription s1 = new Subscription(user1,group1);
+        Subscription s2 = new Subscription(user2,group1);
+        Subscription s3 = new Subscription(user1, group2);
+        Subscription s4 = new Subscription(user2, group2);
+        Subscription s5 = new Subscription(user2, group3);
+
+        subscriptionRepository.save(s1);
+        subscriptionRepository.save(s2);
+        subscriptionRepository.save(s3);
+        subscriptionRepository.save(s4);
+        subscriptionRepository.save(s5);
+
+        Message m16 = new Message(user1, group1, m1, "TestParentM16", "TestParentM16", LocalDateTime.now());
+        messageRepo.save(m16);
+
+        Message m17 = new Message(user1, group1, m1, "TestParentM17", "TestParentM17", LocalDateTime.now());
+        messageRepo.save(m17);
+
+        Like l1 = new Like(user1, m17);
+        Like l2 = new Like(user1, m16);
+        Like l3 = new Like(user2, m17);
+
+        likeRepository.save(l1);
+        likeRepository.save(l2);
+        likeRepository.save(l3);
+
+
     }
 
     @Bean
-    public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, MessageService messageService) {
+
+    public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, SubscriptionRepository subscriptionRepo, LikeRepository likeRepo, MessageService messageService) {
         return (args) -> {
             //run if you want to populate the database
-            initDB(userRepo, groupRepo, messageRepo);
+            //initDB(userRepo, groupRepo, messageRepo, subscriptionRepo, likeRepo);
 
-            System.out.println(messageService.findAll().size());
+            /*
+            System.out.println(messageService.findMessagesByParenMessageId(12L).get(0).getContent());
+            System.out.println("Test OK");
+
+            List<MessageDto> messagesOfUser2 = messageService.findAllByUserIdDtos(2L);
+            for(MessageDto m: messagesOfUser2)
+            {
+                System.out.println(m.getContent() + " | ");
+            }
+
+            System.out.println("Test OK! Afiseaza toate mesajele din grupurile in care este user 2 inscris (1,2,3) chiar daca mesajele nu sunt postate de el");
+
+
+
+            List<MessageDto> mostPopulareMessagesShowForUser1 = messageService.mostPopularMessages(1L);
+            for(MessageDto m: mostPopulareMessagesShowForUser1)
+            {
+                System.out.println(m.getContent() + " | ");
+            }
+
+            List<MessageDto> mostPopulareMessagesShowForUser2 = messageService.mostPopularMessages(2L);
+            for(MessageDto m: mostPopulareMessagesShowForUser2)
+            {
+                System.out.println(m.getContent() + " | ");
+            }
+
+            System.out.println("Test ok! Afiseaza mesajul m17 care are 2 like-uri");
+
+
+            //in caz ca lista e goala
+            if (messageService.findMessagesByParenMessageId(15L).size() == 0){
+                System.out.println("Da");
+            }
+
+            List<MessageDto> mostPopulareMessagesShowForUser5 = messageService.mostPopularMessages(5L);
+            if (mostPopulareMessagesShowForUser5.size() == 0){
+                System.out.println("Da x2");
+            }
+
+             */
+
         };
     }
 }

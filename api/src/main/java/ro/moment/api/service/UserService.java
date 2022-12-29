@@ -63,6 +63,15 @@ public class UserService {
         return new UserDto(user);
     }
 
+    public User findUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            return null;
+        }
+        return user;
+    }
+
     public void save(UserDto userDto) {
         validateUser(userDto);
         User user = userDto.toDomain();
@@ -84,3 +93,4 @@ public class UserService {
         userRepository.deleteById(id);
     }
 }
+
