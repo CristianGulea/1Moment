@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.dto.MessageDto;
+import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.service.MessageService;
 
 import java.util.List;
@@ -45,7 +46,11 @@ public class MessageController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody MessageDto message) {
-        messageService.save(message);
+        try {
+            messageService.save(message);
+        } catch (ValidationException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<MessageDto>(message, HttpStatus.CREATED);
 
     }
