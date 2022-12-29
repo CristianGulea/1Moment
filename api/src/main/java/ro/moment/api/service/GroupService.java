@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.moment.api.domain.Group;
 import ro.moment.api.domain.dto.GroupDto;
+import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.repository.GroupRepository;
 
 import java.time.LocalDate;
@@ -17,7 +18,20 @@ public class GroupService {
     private final GroupRepository groupRepository;
 
     private void validateGroup(GroupDto groupDto) {
-        //todo: validate fields
+        StringBuilder builder = new StringBuilder();
+
+        if (groupDto.getName() != null) {
+            if (groupDto.getName().isEmpty()) {
+                builder.append("Group name should contain at least one letter\n");
+            }
+        }
+        else {
+            builder.append("Group name should not be null\n");
+        }
+
+        if (!builder.isEmpty()) {
+            throw new ValidationException(builder.toString());
+        }
     }
 
     public List<GroupDto> findAll() {
