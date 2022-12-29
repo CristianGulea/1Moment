@@ -62,7 +62,7 @@ public class MessageService {
     public MessageDto findById(Long id) {
         Optional<Message> message = messageRepository.findById(id);
 
-        return message.map(MessageDto::new).orElse(null);
+        return message.map(this::convertToMessageDTO).orElse(null);
     }
 
     public void save(MessageDto messageDto) {
@@ -87,10 +87,8 @@ public class MessageService {
 
     public List<MessageDto> findMessagesByParenMessageId(Long id) {
         List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
-        List<MessageDto> dtos = new ArrayList<MessageDto>();
 
-        messages.forEach(m -> dtos.add(new MessageDto(m)));
-        return dtos;
+        return convertToMessageDTOs(messages);
     }
 
     private List<Message> findAllByUserId(Long id) {
@@ -127,13 +125,26 @@ public class MessageService {
         return convertToMessageDTOs(messages);
     }
 
+    private MessageDto convertToMessageDTO(Message message) {
+        MessageDto dto = new MessageDto(message);
+        dto.setLiked(
+                likeRepository.existsLikeByUserIdAndMessageId(
+                        message.getUser().getId(),
+                        message.getId()
+                )
+        );
+        dto.setLikeCount(
+                likeRepository.countByMessageId(
+                        message.getId()
+                )
+        );
+        return dto;
+    }
     private List<MessageDto> convertToMessageDTOs(List<Message> messages) {
         List<MessageDto> dtos = new ArrayList<MessageDto>();
-        messages.forEach(m -> dtos.add(new MessageDto(m)));
+        messages.forEach(m -> dtos.add(convertToMessageDTO(m)));
         return dtos;
     }
-
-
 
     private MessageDto mostPopularMessageByParentMessageId(Long id) {
         List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
@@ -153,12 +164,12 @@ public class MessageService {
 
         }
 
-        if (messages.size()!= 0)
+        if (messages.size() != 0)
         {
             if (maxNumberOfLikes == 0){
-            return new MessageDto(messages.get(0));
+            return convertToMessageDTO(messages.get(0));
             }
-            return new MessageDto(mesajGasit);
+            return convertToMessageDTO(mesajGasit);
         }
 
         return null;
