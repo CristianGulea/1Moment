@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message,Long> {
 
+    Message findMessageById(Long MessageId);
     List<Message> findMessageByGroupId(Long id);
 
     List<Message> findMessagesByGroupName(String name);

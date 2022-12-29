@@ -2,11 +2,14 @@ package ro.moment.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ro.moment.api.domain.Like;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.Subscription;
+import ro.moment.api.domain.User;
 import ro.moment.api.domain.dto.MessageDto;
 import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.repository.*;
+import ro.moment.api.security.utils.JwtService;
 
 import java.util.*;
 
@@ -23,6 +26,7 @@ public class MessageService {
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final JwtService jwtService;
 
     private void validateMessage(MessageDto messageDto) {
         StringBuilder builder = new StringBuilder();
@@ -48,21 +52,21 @@ public class MessageService {
         }
     }
 
-    public List<MessageDto> findAll() {
+    public List<MessageDto> findAll(String token) {
         List<Message> messages = messageRepository.findByPublishDateBefore(LocalDateTime.now());
-        return convertToMessageDTOs(messages);
+        return convertToMessageDTOs(messages, token);
     }
 
-    public List<MessageDto> findMessageByGroupId(Long id) {
+    public List<MessageDto> findMessageByGroupId(Long id, String token) {
         List<Message> messages = messageRepository.findByPublishDateBeforeAndGroup_Id(LocalDateTime.now(),id);
-        return convertToMessageDTOs(messages);
+        return convertToMessageDTOs(messages, token);
     }
 
 
-    public MessageDto findById(Long id) {
+    public MessageDto findById(Long id, String token) {
         Optional<Message> message = messageRepository.findById(id);
 
-        return message.map(this::convertToMessageDTO).orElse(null);
+        return message.map(value -> convertToMessageDTO(value, token)).orElse(null);
     }
 
     public void save(MessageDto messageDto) {
@@ -85,10 +89,10 @@ public class MessageService {
     }
 
 
-    public List<MessageDto> findMessagesByParenMessageId(Long id) {
+    public List<MessageDto> findMessagesByParenMessageId(Long id, String token) {
         List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
 
-        return convertToMessageDTOs(messages);
+        return convertToMessageDTOs(messages, token);
     }
 
     private List<Message> findAllByUserId(Long id) {
@@ -120,16 +124,17 @@ public class MessageService {
     }
 
 
-    public List<MessageDto> findAllByUserIdDtos(Long id) {
+    public List<MessageDto> findAllByUserIdDtos(Long id, String token) {
         List<Message> messages = findAllByUserId(id);
-        return convertToMessageDTOs(messages);
+        return convertToMessageDTOs(messages, token);
     }
 
-    private MessageDto convertToMessageDTO(Message message) {
+    private MessageDto convertToMessageDTO(Message message, String userToken) {
         MessageDto dto = new MessageDto(message);
+        User user = jwtService.getUserByToken(userToken);
         dto.setLiked(
                 likeRepository.existsLikeByUserIdAndMessageId(
-                        message.getUser().getId(),
+                        user.getId(),
                         message.getId()
                 )
         );
@@ -140,13 +145,13 @@ public class MessageService {
         );
         return dto;
     }
-    private List<MessageDto> convertToMessageDTOs(List<Message> messages) {
+    private List<MessageDto> convertToMessageDTOs(List<Message> messages, String token) {
         List<MessageDto> dtos = new ArrayList<MessageDto>();
-        messages.forEach(m -> dtos.add(convertToMessageDTO(m)));
+        messages.forEach(m -> dtos.add(convertToMessageDTO(m, token)));
         return dtos;
     }
 
-    private MessageDto mostPopularMessageByParentMessageId(Long id) {
+    private MessageDto mostPopularMessageByParentMessageId(Long id, String token) {
         List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
 
 
@@ -167,22 +172,22 @@ public class MessageService {
         if (messages.size() != 0)
         {
             if (maxNumberOfLikes == 0){
-            return convertToMessageDTO(messages.get(0));
+            return convertToMessageDTO(messages.get(0), token);
             }
-            return convertToMessageDTO(mesajGasit);
+            return convertToMessageDTO(mesajGasit, token);
         }
 
         return null;
 
     }
 
-    public List<MessageDto> mostPopularMessages(Long userId){
+    public List<MessageDto> mostPopularMessages(Long userId, String token){
         List<Message> mesajeUser = findAllByUserId(userId);
         List<MessageDto> result = new ArrayList<MessageDto>();
 
         for (Message m: mesajeUser){
-            if (mostPopularMessageByParentMessageId(m.getId())!=null){
-                result.add(mostPopularMessageByParentMessageId(m.getId()));
+            if (mostPopularMessageByParentMessageId(m.getId(), token)!=null){
+                result.add(mostPopularMessageByParentMessageId(m.getId(), token));
             }
         }
 
@@ -190,5 +195,36 @@ public class MessageService {
 
     }
 
+    public boolean likeMessage(Long messageId, String userToken) {
+        User user = jwtService.getUserByToken(userToken);
+        Message message = messageRepository.findMessageById(messageId);
 
+        if (user == null || message == null) {
+            return false;
+        }
+
+        if (likeRepository.existsLikeByUserIdAndMessageId(user.getId(), messageId)) {
+            return false;
+        }
+
+        likeRepository.save(new Like(user, message));
+        return true;
+    }
+
+    public boolean dislikeMessage(Long messageId, String userToken) {
+        User user = jwtService.getUserByToken(userToken);
+        Message message = messageRepository.findMessageById(messageId);
+
+        if (user == null || message == null) {
+            return false;
+        }
+
+        Like like = likeRepository.getLikeByUserIdAndMessageId(user.getId(), messageId);
+        if (like == null) {
+            return false;
+        }
+
+        likeRepository.delete(like);
+        return true;
+    }
 }
