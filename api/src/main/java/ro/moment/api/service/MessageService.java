@@ -38,9 +38,6 @@ public class MessageService {
         if (messageDto.getTitle() == null) {
             builder.append("Message Title should not be null\n");
         }
-        else if (messageDto.getTitle().isEmpty()) {
-            builder.append("Message Title should contain at least one character\n");
-        }
 
         if (messageDto.getContent() == null) {
             builder.append("Message Content should not be null\n");
