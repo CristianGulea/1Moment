@@ -21,6 +21,8 @@ public class MessageDto extends BaseEntityDto {
     private LocalDateTime publishDate;
     private String groupName;
     private String username;
+    private boolean liked;
+    private long likeCount;
 
     public MessageDto(Message entity) {
         super(entity);
