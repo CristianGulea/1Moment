@@ -43,11 +43,6 @@ public class MessageService {
             builder.append("Message Content should not be null\n");
         }
 
-        //todo: make sure client has enough time to send the request
-        if (messageDto.getPublishDate().isAfter(LocalDateTime.now().minusSeconds(2))) {
-            builder.append("Message Publish date cannot be from past\n");
-        }
-
         if (!builder.isEmpty()) {
             throw new ValidationException(builder.toString());
         }
@@ -70,6 +65,10 @@ public class MessageService {
     }
 
     public void save(MessageDto messageDto) {
+        if (messageDto.getPublishDate() == null || messageDto.getPublishDate().isBefore(LocalDateTime.now())) {
+            messageDto.setCreatedDate(LocalDate.now());
+        }
+
         validateMessage(messageDto);
         Message message = messageDto.toDomain();
         Long userId = messageDto.getUserId();       //todo: validate this
@@ -77,7 +76,6 @@ public class MessageService {
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
 
-        message.setCreatedDate(LocalDate.now());
         messageRepository.save(message);
     }
 
