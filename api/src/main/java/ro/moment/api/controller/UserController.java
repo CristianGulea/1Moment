@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.LoginDetails;
 import ro.moment.api.domain.User;
 import ro.moment.api.domain.dto.UserDto;
+import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.security.exceptions.RefreshTokenExpiredException;
 import ro.moment.api.security.tokens.Token;
 import ro.moment.api.service.UserService;
@@ -60,7 +61,11 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody UserDto user) {
-        userService.save(user);
+        try{
+            userService.save(user);
+        } catch(ValidationException ex) {
+			return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+	    }
         return new ResponseEntity<UserDto>(user, HttpStatus.CREATED);
     }
 

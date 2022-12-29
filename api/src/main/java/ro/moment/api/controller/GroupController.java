@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Group;
 import ro.moment.api.domain.dto.GroupDto;
+import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.repository.GroupRepository;
 import ro.moment.api.service.GroupService;
 
@@ -42,7 +43,11 @@ public class GroupController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody GroupDto group){
-        groupService.save(group);
+        try {
+            groupService.save(group);
+        } catch (ValidationException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<GroupDto>(group, HttpStatus.CREATED);
 
     }

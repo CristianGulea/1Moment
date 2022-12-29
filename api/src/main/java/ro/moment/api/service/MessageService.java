@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.Subscription;
 import ro.moment.api.domain.dto.MessageDto;
+import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.repository.*;
-
 
 import java.util.*;
 
@@ -25,7 +25,27 @@ public class MessageService {
     private final SubscriptionRepository subscriptionRepository;
 
     private void validateMessage(MessageDto messageDto) {
-        //todo: validate fields
+        StringBuilder builder = new StringBuilder();
+
+        if (messageDto.getUserId() == null) {
+            builder.append("Message UserId should not be null\n");
+        }
+
+        if (messageDto.getGroupId() == null) {
+            builder.append("Message GroupId should not be null\n");
+        }
+
+        if (messageDto.getTitle() == null) {
+            builder.append("Message Title should not be null\n");
+        }
+
+        if (messageDto.getContent() == null) {
+            builder.append("Message Content should not be null\n");
+        }
+
+        if (!builder.isEmpty()) {
+            throw new ValidationException(builder.toString());
+        }
     }
 
     public List<MessageDto> findAll() {
@@ -46,6 +66,10 @@ public class MessageService {
     }
 
     public void save(MessageDto messageDto) {
+        if (messageDto.getPublishDate() == null || messageDto.getPublishDate().isBefore(LocalDateTime.now())) {
+            messageDto.setCreatedDate(LocalDate.now());
+        }
+
         validateMessage(messageDto);
         Message message = messageDto.toDomain();
         Long userId = messageDto.getUserId();       //todo: validate this
@@ -53,7 +77,6 @@ public class MessageService {
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
 
-        message.setCreatedDate(LocalDate.now());
         messageRepository.save(message);
     }
 
