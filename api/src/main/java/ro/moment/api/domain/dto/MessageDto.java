@@ -15,12 +15,14 @@ import java.time.LocalDateTime;
 public class MessageDto extends BaseEntityDto {
     private Long userId;
     private Long groupId;
-    private String parentMessageId;
+    private Long parentMessageId;
     private String title;
     private String content;
     private LocalDateTime publishDate;
     private String groupName;
     private String username;
+    private boolean liked;
+    private long likeCount;
 
     public MessageDto(Message entity) {
         super(entity);
@@ -34,9 +36,10 @@ public class MessageDto extends BaseEntityDto {
             this.username = entity.getUser().getUsername();
             this.groupName = entity.getGroup().getName();
 
-            // just why?! isn't Long good enough for you?
-            if (entity.getParentMessage() == null) this.parentMessageId = "null";
-            else this.parentMessageId = String.valueOf(entity.getParentMessage().getId());
+            if (entity.getParentMessage() == null)
+                this.parentMessageId = null;
+            else
+                this.parentMessageId = entity.getParentMessage().getId();
         }
     }
 
@@ -58,10 +61,6 @@ public class MessageDto extends BaseEntityDto {
         message.setTitle(title);
         message.setContent(content);
         message.setPublishDate(publishDate);
-
-        Message parent = new Message();
-        parent.setId(Long.parseLong(this.parentMessageId));
-        message.setParentMessage(parent);
 
         return message;
     }

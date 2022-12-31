@@ -11,8 +11,6 @@ import java.util.UUID;
 @Setter
 public class GroupDto extends BaseEntityDto{
     private String name;
-    private boolean liked;
-    private long likeCount;
 
     public GroupDto(Long id, LocalDate createdDate, LocalDate updatedDate, UUID externalId, String name) {
         super(id, createdDate, updatedDate, externalId);

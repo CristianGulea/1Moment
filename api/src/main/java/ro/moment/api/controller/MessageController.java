@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ro.moment.api.domain.Message;
 import ro.moment.api.domain.User;
 import ro.moment.api.domain.dto.MessageDto;
+import ro.moment.api.domain.exceptions.ValidationException;
 import ro.moment.api.service.MessageService;
 import ro.moment.api.service.UserService;
 
@@ -21,24 +22,27 @@ public class MessageController {
     private final UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<MessageDto> getAll() {
+    public List<MessageDto> getAll(@RequestHeader("Authorization") String token) {
         System.out.println("Get all messages ...");
-        return messageService.findAll();
+        token = token.replaceFirst("Bearer ", "");
+        return messageService.findAll(token);
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity<?> getByGroupId(@RequestParam String id) {
+    public ResponseEntity<?> getByGroupId(@RequestParam Long id, @RequestHeader("Authorization") String token) {
         System.out.println("Get by group id " + id);
+        token = token.replaceFirst("Bearer ", "");
 
-        List<MessageDto> result = messageService.findMessageByGroupId(Long.valueOf(id));
+        List<MessageDto> result = messageService.findMessageByGroupId(id, token);
         return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@PathVariable String id) {
+    public ResponseEntity<?> getById(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         System.out.println("Get by id " + id);
+        token = token.replaceFirst("Bearer ", "");
 
-        MessageDto message = messageService.findById(Long.valueOf(id));
+        MessageDto message = messageService.findById(id, token);
         if (message == null)
             return new ResponseEntity<String>("Message not found", HttpStatus.NOT_FOUND);
         else
@@ -48,7 +52,11 @@ public class MessageController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody MessageDto message) {
-        message = messageService.save(message);
+        try {
+            messageService.save(message);
+        } catch (ValidationException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<MessageDto>(message, HttpStatus.CREATED);
 
     }
@@ -77,10 +85,11 @@ public class MessageController {
 
 
     @RequestMapping(method = RequestMethod.GET, params = "parentId")
-    public ResponseEntity<?> getMessagesByParentMessageId(@RequestParam  String parentId) {
+    public ResponseEntity<?> getMessagesByParentMessageId(@RequestParam Long parentId, @RequestHeader("Authorization") String token) {
         System.out.println("Get messages by parent message Id " + parentId);
+        token = token.replaceFirst("Bearer ", "");
 
-        List<MessageDto> result = messageService.findMessagesByParenMessageId(Long.valueOf(parentId));
+        List<MessageDto> result = messageService.findMessagesByParenMessageId(parentId, token);
         return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
@@ -92,11 +101,12 @@ public class MessageController {
    */
 
     @RequestMapping(method = RequestMethod.GET, params="username")
-    public ResponseEntity<?> getMessagesForOneUser(@RequestParam  String username) {
+    public ResponseEntity<?> getMessagesForOneUser(@RequestParam  String username, @RequestHeader("Authorization") String token) {
         User user = this.userService.findUserByUsername(username);
         System.out.println("Get messages for one user " + username + " and id = " + user.getId());
+        token = token.replaceFirst("Bearer ", "");
 
-        List<MessageDto> result = messageService.findAllByUserIdDtos(user.getId());
+        List<MessageDto> result = messageService.findAllByUserIdDtos(user.getId(), token);
         return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
@@ -107,15 +117,34 @@ public class MessageController {
     */
 
     @RequestMapping( method = RequestMethod.GET, params="usernameForLikes" )
-    public ResponseEntity<?> getMostPopularMessageByParentMessageId(@RequestParam  String usernameForLikes) {
+    public ResponseEntity<?> getMostPopularMessageByParentMessageId(@RequestParam  String usernameForLikes, @RequestHeader("Authorization") String token) {
         User user = this.userService.findUserByUsername(usernameForLikes);
         System.out.println("Get most popular message " + usernameForLikes);
+        token = token.replaceFirst("Bearer ", "");
 
-        List<MessageDto> result = messageService.mostPopularMessages(user.getId());
+        List<MessageDto> result = messageService.mostPopularMessages(user.getId(), token);
         return new ResponseEntity<List<MessageDto>>(result, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{id}/like", method = RequestMethod.PATCH)
+    public ResponseEntity<?> like(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        System.out.println("Like message " + id);
+        token = token.replaceFirst("Bearer ", "");
 
+        if (messageService.likeMessage(id, token))
+            return new ResponseEntity<>("liked", HttpStatus.OK);
 
+        return new ResponseEntity<>("Unable to like", HttpStatus.BAD_REQUEST);
+    }
 
+    @RequestMapping(value = "/{id}/dislike", method = RequestMethod.PATCH)
+    public ResponseEntity<?> dislike(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        System.out.println("Dislike message " + id);
+        token = token.replaceFirst("Bearer ", "");
+
+        if (messageService.dislikeMessage(id, token))
+            return new ResponseEntity<>("disliked", HttpStatus.OK);
+
+        return new ResponseEntity<>("Unable to dislike", HttpStatus.BAD_REQUEST);
+    }
 }
