@@ -30,10 +30,10 @@
       <mat-list fxLayout="column" fxLayoutGap="20px">
         <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let comment of comments">
           <div class="container-fluid">
-            <div class="post-detail">Posted by {{comment.username}}  <span
+            <div class="post-detail">Posted by {{comment.username?comment.username:""}}  <span
               class="date-text">{{comment.publishDate.toLocaleDateString("en-US")}}</span></div>
             <mat-card-content>
-              {{comment.content}}
+              {{comment.content?comment.content :""}}
             </mat-card-content>
             <mat-card-content>
               <button mat-icon-button>

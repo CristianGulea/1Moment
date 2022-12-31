@@ -56,8 +56,12 @@ export class CommentPageComponent implements OnInit {
       parentMessageId: this.currentDiscussion.id?.toString(),
       content: addCommentForm.value.comment,
       publishDate: new Date(),
+      username: this.commentService.user.username
     };
-    this.commentService.addComment(message).subscribe(value=>console.log(value));
-    console.log(addCommentForm.value.comment)
+    this.commentService.addComment(message).subscribe(value=>{
+      value.username= this.commentService.user.username;
+      value.publishDate= new Date(value.publishDate);
+      this.comments= [...this.comments, value];
+    });
   }
 }
