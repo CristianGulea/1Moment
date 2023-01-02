@@ -2,7 +2,6 @@ package ro.moment.api.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ro.moment.api.domain.Group;
 import ro.moment.api.domain.Message;
 
 import java.time.LocalDateTime;
@@ -11,16 +10,10 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message,Long> {
 
-    Message findMessageById(Long MessageId);
-    List<Message> findMessageByGroupId(Long id);
-
-    List<Message> findMessagesByGroupName(String name);
-
-    List<Message> findMessagesByParentMessageId(Long id);
-
-    List<Message> findByGroupId(Long id);
+    Message findMessageByIdAndPublishDateBefore(Long id, LocalDateTime publishDate);
+    List<Message> findMessagesByParentMessageIdAndPublishDateBefore(Long parentMessage_id, LocalDateTime publishDate);
     List<Message> findByPublishDateBefore(LocalDateTime publishDate);
-    List<Message> findByPublishDateBeforeAndGroup_Id(LocalDateTime publishDate, Long id);
+    List<Message> findByGroupIdAndPublishDateBefore(Long group_id, LocalDateTime publishDate);
 
 
 }
