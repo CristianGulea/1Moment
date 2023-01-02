@@ -32,4 +32,17 @@ export class CommentPageService{
       {headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer '+this.user.accessToken})}
   );
   }
+
+  like(messageId: number){
+    return this.http.patch('http://localhost:8080/message/'+messageId+'/like',
+      {},
+      {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})}
+    );
+  }
+
+  dislike(messageId: number){
+    return this.http.patch('http://localhost:8080/message/'+messageId+'/dislike',{},
+      {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})}
+    );
+  }
 }

@@ -26,6 +26,15 @@ import {AuthGuard} from "./components/login/auth-guard";
 import { SignupComponent } from './components/signup/signup.component';
 import {FeedComponent} from "./components/feed/feed.component";
 import {CommentPageComponent} from "./components/comment-page/comment-page.component";
+import {DateTimePickerModule} from "@syncfusion/ej2-angular-calendars";
+import {
+  NgxMatDatetimePickerModule,
+  NgxMatNativeDateModule,
+  NgxMatTimepickerModule
+} from "@angular-material-components/datetime-picker";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 const routes: Routes = [
@@ -74,10 +83,17 @@ const routes: Routes = [
     MatInputModule,
     FormsModule,
     RouterModule.forRoot(routes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DateTimePickerModule,
+    NgxMatDatetimePickerModule,
+    MatDatepickerModule,
+    NgxMatTimepickerModule,
+    MatNativeDateModule,
+    NgxMatNativeDateModule,
+    MatSnackBarModule
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [MatDatepickerModule],
   bootstrap: [AppComponent]
 })
 export class AppModule {

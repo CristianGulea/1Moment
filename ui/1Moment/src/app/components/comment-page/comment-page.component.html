@@ -20,6 +20,19 @@
         <textarea name="comment" ngModel
                   style="padding-left: 1%; padding-top: 0.5%; min-height: 100px; min-width: 100%;"
                   placeholder="What are your thoughts?"></textarea>
+        <mat-form-field>
+          <input matInput [ngxMatDatetimePicker]="picker"
+                 placeholder="Choose a date"
+                 [formControl]="dateControl"
+                 (dateChange)="dateUpdated()">
+          <mat-datepicker-toggle matSuffix [for]="$any(picker)">
+          </mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                                   [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                                   [touchUi]="false" [enableMeridian]="false"
+                                   [disableMinute]="false" [hideTime]="false">
+          </ngx-mat-datetime-picker>
+        </mat-form-field>
         <button style=" color: dimgray; border-radius: 25px; float: right" mat-raised-button type="submit">
           Comment
         </button>
@@ -30,16 +43,17 @@
       <mat-list fxLayout="column" fxLayoutGap="20px">
         <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let comment of comments">
           <div class="container-fluid">
-            <div class="post-detail">Posted by {{comment.username?comment.username:""}}  <span
+            <div class="post-detail">Posted by {{comment.username ? comment.username : ""}}  <span
               class="date-text">{{comment.publishDate.toLocaleDateString("en-US")}}</span></div>
             <mat-card-content>
-              {{comment.content?comment.content :""}}
+              {{comment.content ? comment.content : ""}}
             </mat-card-content>
             <mat-card-content>
-              <button mat-icon-button>
-                <mat-icon>favorite_border</mat-icon>
+              <button mat-icon-button (click)="onLikeChange(comment)">
+                <mat-icon *ngIf="!comment.liked">favorite_border</mat-icon>
+                <mat-icon *ngIf="comment.liked">favorite</mat-icon>
               </button>
-              <span>{{"31"}}</span>
+              <span>{{comment.likeCount}}</span>
             </mat-card-content>
           </div>
         </mat-card>

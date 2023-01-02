@@ -7,6 +7,8 @@ export interface Message{
   content: string,
   publishDate: Date,
   username?: string,
-  groupName?: string;
+  groupName?: string,
+  liked?: boolean,
+  likeCount?: number,
 }
 
