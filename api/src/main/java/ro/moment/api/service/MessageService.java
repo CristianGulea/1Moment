@@ -71,7 +71,7 @@ public class MessageService {
 
     public void save(MessageDto messageDto) {
         if (messageDto.getPublishDate() == null || messageDto.getPublishDate().isBefore(LocalDateTime.now())) {
-            messageDto.setCreatedDate(LocalDate.now());
+            messageDto.setPublishDate(LocalDateTime.now());
         }
 
         validateMessage(messageDto);
