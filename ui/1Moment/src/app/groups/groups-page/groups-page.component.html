@@ -1,18 +1,26 @@
 <div fxFlexFill fxLayout="column" style="display: flex" *ngIf="!isFetching">
   <mat-toolbar color="primary">
-    <span>Loged as {{user.username}}</span>
+    <span>
+      <mat-card-content>
+        <mat-icon matTooltip="Person">person</mat-icon>
+        Logged as {{user.username}}
+      </mat-card-content>
+    </span>
     <span fxFlex></span>
+    <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">feed</mat-icon></span>
     <button mat-icon-button (click)="onLogout()">
       <mat-icon matTooltip="Logout">
         logout
       </mat-icon>
     </button>
   </mat-toolbar>
+
   <mat-form-field appearance="fill" style="background-color: rgb(117, 72, 189);" >
     <mat-label ><span style="color: white;">Search groups by name</span></mat-label>
     <input matInput />
     <mat-icon matPrefix style="color: white;">search</mat-icon>
   </mat-form-field>
+
   <mat-list fxLayout="column" fxLayoutGap="20px"
             style="margin-left: 5%; margin-right: 5% ; margin-top: 10px; overflow: auto">
     <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let group of groups">
@@ -23,9 +31,6 @@
         </mat-card-content>
       </div>
       <div>
-        <button *ngIf="false" mat-fab color="primary" (click)="onSubscribe(group)">
-          <mat-icon>fast_forward</mat-icon>
-        </button>
         <button *ngIf="true" mat-fab color="primary" (click)="onSubscribe(group)">
           <mat-icon>fast_forward</mat-icon>
         </button>

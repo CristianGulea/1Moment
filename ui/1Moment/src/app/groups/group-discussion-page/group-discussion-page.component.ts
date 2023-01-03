@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
 import {GroupService} from "../group.service";
 import {Message} from "./Message";
@@ -42,9 +42,9 @@ export class GroupDiscussionPageComponent implements OnInit {
     }
   }
 
-  // onGoBack(){
-  //
-  // }
+  onGoBack(){
+      this.router.navigate(["/groups"]);
+  }
 
   onSubscribe(){
 
@@ -57,5 +57,7 @@ export class GroupDiscussionPageComponent implements OnInit {
   onDislike(id: number){
     console.log(id);
   }
+
+  onAddDiscussion(){}
 
 }
