@@ -13,7 +13,6 @@ import ro.moment.api.security.utils.JwtService;
 
 import java.util.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -58,7 +57,7 @@ public class MessageService {
     }
 
     public List<MessageDto> findMessageByGroupId(Long id, String token) {
-        List<Message> messages = messageRepository.findByPublishDateBeforeAndGroup_Id(LocalDateTime.now(),id);
+        List<Message> messages = messageRepository.findByGroupIdAndPublishDateBefore(id, LocalDateTime.now());
         return convertToMessageDTOs(messages, token);
     }
 
@@ -71,7 +70,7 @@ public class MessageService {
 
     public void save(MessageDto messageDto) {
         if (messageDto.getPublishDate() == null || messageDto.getPublishDate().isBefore(LocalDateTime.now())) {
-            messageDto.setCreatedDate(LocalDate.now());
+            messageDto.setPublishDate(LocalDateTime.now());
         }
 
         validateMessage(messageDto);
@@ -90,7 +89,7 @@ public class MessageService {
 
 
     public List<MessageDto> findMessagesByParenMessageId(Long id, String token) {
-        List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
+        List<Message> messages = messageRepository.findMessagesByParentMessageIdAndPublishDateBefore(id, LocalDateTime.now());
 
         return convertToMessageDTOs(messages, token);
     }
@@ -103,7 +102,7 @@ public class MessageService {
         for (int i=0;i<subscriptions.size();i++)
         {
             List<Message> auxiliar = new ArrayList<Message>();
-            auxiliar = messageRepository.findMessagesByGroupName(subscriptions.get(i).getGroup().getName());
+            auxiliar = messageRepository.findByGroupIdAndPublishDateBefore(subscriptions.get(i).getGroup().getId(), LocalDateTime.now());
             for (int j=0;j<auxiliar.size();j++)
             {
                 foundMessages.add(auxiliar.get(j));
@@ -152,7 +151,7 @@ public class MessageService {
     }
 
     private MessageDto mostPopularMessageByParentMessageId(Long id, String token) {
-        List<Message> messages = messageRepository.findMessagesByParentMessageId(id);
+        List<Message> messages = messageRepository.findMessagesByParentMessageIdAndPublishDateBefore(id, LocalDateTime.now());
 
 
         long maxNumberOfLikes = 0;
@@ -197,7 +196,7 @@ public class MessageService {
 
     public boolean likeMessage(Long messageId, String userToken) {
         User user = jwtService.getUserByToken(userToken);
-        Message message = messageRepository.findMessageById(messageId);
+        Message message = messageRepository.findMessageByIdAndPublishDateBefore(messageId, LocalDateTime.now());
 
         if (user == null || message == null) {
             return false;
@@ -213,7 +212,7 @@ public class MessageService {
 
     public boolean dislikeMessage(Long messageId, String userToken) {
         User user = jwtService.getUserByToken(userToken);
-        Message message = messageRepository.findMessageById(messageId);
+        Message message = messageRepository.findMessageByIdAndPublishDateBefore(messageId, LocalDateTime.now());
 
         if (user == null || message == null) {
             return false;
