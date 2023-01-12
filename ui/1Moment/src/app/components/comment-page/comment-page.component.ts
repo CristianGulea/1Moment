@@ -72,6 +72,7 @@ export class CommentPageComponent implements OnInit {
       duration: 2000,
     });
     this.commentService.addComment(message).subscribe(value => {
+      value.publishDate= new Date(value.publishDate);
       if (value.publishDate <= new Date()) {
         value.username = this.commentService.user.username;
         value.publishDate = new Date(value.publishDate);
