@@ -132,49 +132,7 @@ public class ApiApplication {
     public CommandLineRunner testing(UserRepository userRepo, GroupRepository groupRepo, MessageRepository messageRepo, SubscriptionRepository subscriptionRepo, LikeRepository likeRepo, MessageService messageService) {
         return (args) -> {
             //run if you want to populate the database
-            //initDB(userRepo, groupRepo, messageRepo, subscriptionRepo, likeRepo);
-
-            /*
-            System.out.println(messageService.findMessagesByParenMessageId(12L).get(0).getContent());
-            System.out.println("Test OK");
-
-            List<MessageDto> messagesOfUser2 = messageService.findAllByUserIdDtos(2L);
-            for(MessageDto m: messagesOfUser2)
-            {
-                System.out.println(m.getContent() + " | ");
-            }
-
-            System.out.println("Test OK! Afiseaza toate mesajele din grupurile in care este user 2 inscris (1,2,3) chiar daca mesajele nu sunt postate de el");
-
-
-
-            List<MessageDto> mostPopulareMessagesShowForUser1 = messageService.mostPopularMessages(1L);
-            for(MessageDto m: mostPopulareMessagesShowForUser1)
-            {
-                System.out.println(m.getContent() + " | ");
-            }
-
-            List<MessageDto> mostPopulareMessagesShowForUser2 = messageService.mostPopularMessages(2L);
-            for(MessageDto m: mostPopulareMessagesShowForUser2)
-            {
-                System.out.println(m.getContent() + " | ");
-            }
-
-            System.out.println("Test ok! Afiseaza mesajul m17 care are 2 like-uri");
-
-
-            //in caz ca lista e goala
-            if (messageService.findMessagesByParenMessageId(15L).size() == 0){
-                System.out.println("Da");
-            }
-
-            List<MessageDto> mostPopulareMessagesShowForUser5 = messageService.mostPopularMessages(5L);
-            if (mostPopulareMessagesShowForUser5.size() == 0){
-                System.out.println("Da x2");
-            }
-
-             */
-
+           // initDB(userRepo, groupRepo, messageRepo,subscriptionRepo,likeRepo);
         };
     }
 }

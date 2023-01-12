@@ -58,4 +58,7 @@ export class GroupDiscussionPageComponent implements OnInit {
     console.log(id);
   }
 
+  onDiscutionSelected(id: number) {
+    this.router.navigate(['/comments',id])
+  }
 }
