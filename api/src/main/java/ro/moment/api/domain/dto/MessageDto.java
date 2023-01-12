@@ -62,6 +62,12 @@ public class MessageDto extends BaseEntityDto {
         message.setContent(content);
         message.setPublishDate(publishDate);
 
+        if (!parentMessageId.equals("null")) {
+            Message parent = new Message();
+            parent.setId(Long.parseLong(parentMessageId));
+            message.setParentMessage(parent);
+        }
+
         return message;
     }
 }
