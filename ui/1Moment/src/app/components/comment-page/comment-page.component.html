@@ -51,7 +51,7 @@
             <mat-card-content>
               <button mat-icon-button (click)="onLikeChange(comment)">
                 <mat-icon *ngIf="!comment.liked">favorite_border</mat-icon>
-                <mat-icon *ngIf="comment.liked">favorite</mat-icon>
+                <mat-icon id="favoriteIcon" *ngIf="comment.liked">favorite</mat-icon>
               </button>
               <span>{{comment.likeCount}}</span>
             </mat-card-content>

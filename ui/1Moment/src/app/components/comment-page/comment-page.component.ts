@@ -57,13 +57,17 @@ export class CommentPageComponent implements OnInit {
   }
 
   addComment(addCommentForm: NgForm) {
+    const date=this.dateControl.value;
+    // @ts-ignore
+    let hoursDiff = date?.getHours()- date?.getTimezoneOffset() /60
+    date?.setHours(hoursDiff);
     // @ts-ignore
     const message: Message = {
       groupId: this.currentDiscussion.groupId,
       userId: this.commentService.user.id ? this.commentService.user.id : 1,
       parentMessageId: this.currentDiscussion.id?.toString(),
       content: addCommentForm.value.comment,
-      publishDate: this.dateControl.value ? this.dateControl.value : new Date(),
+      publishDate: date? date: new Date,
       username: this.commentService.user.username,
       title: 'comment'
     };

@@ -1,0 +1,38 @@
+<div class="container">
+  <form>
+
+  <h1 mat-dialog-title>Public a discussion...</h1>
+
+
+    <mat-form-field appearance="fill" fxFlexFill>
+      <mat-label>Title</mat-label>
+      <input matInput [formControl]="titleControl">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" fxFlexFill>
+      <mat-label>Content</mat-label>
+      <input matInput  [formControl]="contentControl">
+    </mat-form-field>
+
+    <mat-form-field fxFlexFill>
+      <input matInput [ngxMatDatetimePicker]="picker"
+             placeholder="Choose a date"
+             [formControl]="dateControl"
+             (dateChange)="dateUpdated()">
+      <mat-datepicker-toggle matSuffix [for]="$any(picker)">
+      </mat-datepicker-toggle>
+      <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                               [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                               [touchUi]="false" [enableMeridian]="false"
+                               [disableMinute]="false" [hideTime]="false">
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+  <div mat-dialog-actions class="flex-row">
+    <button mat-button class="float-start" (click)="onCancelClick()">Close</button>
+    <button mat-button class="float-end" (click)="onSaveClick()"  cdkFocusInitial>Save</button>
+  </div>
+
+  </form>
+</div>
+

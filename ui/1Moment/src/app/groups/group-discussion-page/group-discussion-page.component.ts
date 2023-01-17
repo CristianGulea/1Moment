@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
 import {GroupService} from "../group.service";
 import {Message} from "./Message";
 import {Router} from "@angular/router";
+import {Group} from "../groups-page/Group";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {FormControl} from "@angular/forms";
+import {LoginService} from "../../components/login/login-service";
+import { ComponentType } from '@angular/cdk/portal';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-group-discussion-page',
@@ -10,37 +16,45 @@ import {Router} from "@angular/router";
   styleUrls: ['./group-discussion-page.component.css']
 })
 export class GroupDiscussionPageComponent implements OnInit {
-  group : { id: number; } = {id:0};
-  messages : Message[] = [];
+  group:Group={ id:0,name:''};
+  messages: Message[] = [];
   isFetching: boolean = false;
   error: boolean = false;
   isSubscribed: boolean = true;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private router: Router) { }
+  constructor(public matDialog: MatDialog,
+              private route: ActivatedRoute,
+              private groupService: GroupService,
+              private router: Router,
+              private loginService: LoginService,
+              private snackBar: MatSnackBar) {
+  }
 
   ngOnInit(): void {
-    this.group={
-      id: this.route.snapshot.params['id']
-    };
+    const id =this.route.snapshot.params['id']
+    this.group.id=id;
     this.route.params.subscribe(
-      (params:Params)=>{
-        this.group.id= params['id'];
+      (params: Params) => {
+        this.group.id = params['id'];
       }
     )
-    this.isFetching=true;
+    this.isFetching = true;
     this.groupService.getGroupDiscussions(this.group.id).subscribe(
-      messages=>{
-        this.isFetching=false;
+      messages => {
+        this.isFetching = false;
         console.log(messages);
-        this.messages= messages;
-      },error => {
-        this.isFetching= false;
-        this.error= true;
+        this.messages = messages;
+      }, error => {
+        this.isFetching = false;
+        this.error = true;
       }
     );
-    if(this.error){
+    if (this.error) {
       this.router.navigate(['/error']);
     }
+    this.groupService.getGroupById(this.group.id).subscribe(value => {
+      this.group = value;
+    })
   }
 
   // onGoBack(){
@@ -55,15 +69,70 @@ export class GroupDiscussionPageComponent implements OnInit {
     this.isSubscribed= !this.isSubscribed;
   }
 
-  onLike(id: number){
-    console.log(id);
+  onLike(message: Message) {
+    message.liked = !message.liked;
+    this.groupService.likeMessage(message.id).subscribe();
   }
 
-  onDislike(id: number){
-    console.log(id);
+  onDislike(message: Message) {
+    message.liked = !message.liked;
+    this.groupService.dislikeMessage(message.id).subscribe();
   }
 
   onDiscutionSelected(id: number) {
-    this.router.navigate(['/comments',id])
+    this.router.navigate(['/comments', id])
   }
+
+  // @ts-ignore
+  openDialog(content): void {
+    this.matDialog.open(content, {
+      data: { messages: this.messages},
+      height: '300',
+      width: '600px',
+    });
+  }
+
+  public dateControl = new FormControl(new Date());
+  public titleControl = new FormControl();
+  public contentControl = new FormControl;
+  onSaveClick() {
+    const date=this.dateControl.value;
+    // @ts-ignore
+    let hoursDiff = date?.getHours()- date?.getTimezoneOffset() /60
+    date?.setHours(hoursDiff);
+    // @ts-ignore
+    const discussion: Message = {
+      userId: this.loginService.user.value.id ? this.loginService.user.value.id : 1,
+      groupId: this.group.id,
+      parentMessageId: "null",
+      title: this.titleControl.value,
+      content: this.contentControl.value,
+      publishDate: date ? date : new Date(),
+      username: this.loginService.user.value.username,
+      groupName: this.group.name,
+      liked: false,
+      likeCount: 0
+    };
+    this.groupService.saveADiscussion(discussion).subscribe(value => {
+      this.snackBar.open("Discussion added with success", "ok", {
+        duration: 2000,
+      });
+      value.publishDate= new Date(value.publishDate);
+      if (value.publishDate <= new Date()) {
+        this.messages = [...this.messages, value];
+      }
+    });
+
+    this.onCancelClick();
+  }
+
+  onCancelClick() {
+    this.matDialog.closeAll();
+  }
+
+  dateUpdated() {
+
+  }
+
 }
+

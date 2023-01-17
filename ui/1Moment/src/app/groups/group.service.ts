@@ -39,4 +39,28 @@ export class GroupService{
       headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})
     });
   }
+
+  getGroupById(id:number){
+    return this.http.get<Group>('http://localhost:8080/group/'+id ,{
+      headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer '+this.user.accessToken})
+    });
+  }
+
+  likeMessage(messageId: number){
+    return this.http.patch('http://localhost:8080/message/'+messageId+'/like',
+      {},
+      {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})}
+    );
+  }
+
+  dislikeMessage(messageId: number){
+    return this.http.patch('http://localhost:8080/message/'+messageId+'/dislike',{},
+      {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})}
+    );
+  }
+
+  saveADiscussion(discussion: Message){
+    return this.http.post<Message>('http://localhost:8080/message', discussion,
+      {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})});
+  }
 }

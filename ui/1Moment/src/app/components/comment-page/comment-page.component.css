@@ -11,12 +11,12 @@
 }
 
 mat-card-title{
-  color: dimgray;
+  color: black;
   padding-top: 0.5%;
 }
 
 mat-card-content{
-  color: dimgray;
+  color: black;
   padding-top: 1%;
 }
 
@@ -24,4 +24,8 @@ textarea:focus {
   outline: none !important;
   border:1px solid #673AB7;
   box-shadow: 0 0 5px #673AB7;
+}
+
+#favoriteIcon{
+  color: #673AB7;
 }
