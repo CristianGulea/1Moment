@@ -114,7 +114,7 @@ export class GroupDiscussionPageComponent implements OnInit {
       likeCount: 0
     };
     this.groupService.saveADiscussion(discussion).subscribe(value => {
-      this.snackBar.open("Comment added with success", "ok", {
+      this.snackBar.open("Discussion added with success", "ok", {
         duration: 2000,
       });
       value.publishDate= new Date(value.publishDate);
