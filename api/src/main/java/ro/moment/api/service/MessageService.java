@@ -102,7 +102,7 @@ public class MessageService {
         for (int i=0;i<subscriptions.size();i++)
         {
             List<Message> auxiliar = new ArrayList<Message>();
-            auxiliar = messageRepository.findByGroupIdAndPublishDateBefore(subscriptions.get(i).getGroup().getId(), LocalDateTime.now());
+            auxiliar = messageRepository.findByGroupIdAndPublishDateBeforeAndParentMessageId(subscriptions.get(i).getGroup().getId(), LocalDateTime.now(),null);
             for (int j=0;j<auxiliar.size();j++)
             {
                 foundMessages.add(auxiliar.get(j));
