@@ -46,7 +46,7 @@ export class GroupService{
   }
 
   saveADiscussion(discussion: Message){
-    return this.http.post('http://localhost:8080/message', discussion,
+    return this.http.post<Message>('http://localhost:8080/message', discussion,
       {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})});
   }
 }

@@ -3,11 +3,8 @@
 <!--    <button style="margin-right: 5px" mat-icon-button (click)="onGoBack()">-->
 <!--      <mat-icon  matTooltip="Go back">keyboard_backspace</mat-icon>-->
 <!--    </button>-->
-    <span>{{groupData.name}}</span>
+    <span>{{group.name}}</span>
     <span fxFlex></span>
-    <button mat-icon-button>
-      <mat-icon (click)="openDialog()">add</mat-icon>
-    </button>
     <button mat-icon-button (click)="onSubscribe()">
       <mat-icon
         matTooltip="Subscribe">
@@ -16,6 +13,14 @@
     </button>
   </mat-toolbar>
   <mat-list class="discussion-list" fxLayout="column" fxLayoutGap="20px">
+    <mat-card fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-content>
+        <mat-card-title>Add a new discussion</mat-card-title>
+        <button mat-raised-button color="primary" (click)="openDialog(addModal)">
+          Add new Discussion
+        </button>
+      </mat-card-content>
+    </mat-card>
     <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages"  >
       <div  (click)="onDiscutionSelected(message.id)">
         <mat-card-title>{{message.title}}</mat-card-title>
@@ -39,3 +44,43 @@
 </div>
 
 
+<ng-template #addModal let-modal>
+  <div class="container">
+    <form (ngSubmit)="onSaveClick()">
+
+      <h1 mat-dialog-title>Public a discussion...</h1>
+
+
+      <mat-form-field appearance="fill" fxFlexFill>
+        <mat-label>Title</mat-label>
+        <input matInput [formControl]="titleControl">
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" fxFlexFill>
+        <mat-label>Content</mat-label>
+        <input matInput  [formControl]="contentControl">
+      </mat-form-field>
+
+      <mat-form-field fxFlexFill>
+        <input matInput [ngxMatDatetimePicker]="picker"
+               placeholder="Choose a date"
+               [formControl]="dateControl"
+               (dateChange)="dateUpdated()">
+        <mat-datepicker-toggle matSuffix [for]="$any(picker)">
+        </mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
+                                 [stepHour]="1" [stepMinute]="1" [stepSecond]="1"
+                                 [touchUi]="false" [enableMeridian]="false"
+                                 [disableMinute]="false" [hideTime]="false">
+        </ngx-mat-datetime-picker>
+      </mat-form-field>
+
+      <div mat-dialog-actions class="flex-row">
+        <button mat-button class="float-start" (click)="onCancelClick()">Close</button>
+        <button type="submit" mat-button class="float-end"  cdkFocusInitial>Save</button>
+      </div>
+
+    </form>
+  </div>
+
+</ng-template>
