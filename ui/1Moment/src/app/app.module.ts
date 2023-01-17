@@ -35,6 +35,8 @@ import {
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {Dialog} from "./groups/group-discussion-page/dialog-page";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 const routes: Routes = [
@@ -54,6 +56,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     CommentPageComponent,
+    Dialog,
     FeedComponent,
     AppComponent,
     GroupDiscussionPageComponent,
@@ -90,7 +93,8 @@ const routes: Routes = [
     NgxMatTimepickerModule,
     MatNativeDateModule,
     NgxMatNativeDateModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule
   ],
   exports: [RouterModule],
   providers: [MatDatepickerModule],
