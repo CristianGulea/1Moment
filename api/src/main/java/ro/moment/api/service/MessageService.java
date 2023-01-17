@@ -57,7 +57,7 @@ public class MessageService {
     }
 
     public List<MessageDto> findMessageByGroupId(Long id, String token) {
-        List<Message> messages = messageRepository.findByGroupIdAndPublishDateBefore(id, LocalDateTime.now());
+        List<Message> messages = messageRepository.findByGroupIdAndPublishDateBeforeAndParentMessageId(id, LocalDateTime.now(),null);
         return convertToMessageDTOs(messages, token);
     }
 
