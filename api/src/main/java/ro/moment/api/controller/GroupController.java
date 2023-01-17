@@ -24,16 +24,17 @@ public class GroupController {
     private final GroupService groupService;
 
     @RequestMapping( method=RequestMethod.GET)
-    public List<GroupDto> getAll(){
+    public List<GroupDto> getAll(@RequestHeader("Authorization") String token){
         System.out.println("Get all groups ...");
-        return groupService.findAll();
+        token = token.replaceFirst("Bearer ", "");
+        return groupService.findAll(token);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@PathVariable String id){
+    public ResponseEntity<?> getById(@PathVariable String id,@RequestHeader("Authorization") String token){
         System.out.println("Get by id "+id);
-
-        GroupDto group = groupService.findById(Long.valueOf(id));
+        token = token.replaceFirst("Bearer ", "");
+        GroupDto group = groupService.findById(Long.valueOf(id),token);
         if (group == null)
             return new ResponseEntity<String>("Group not found",HttpStatus.NOT_FOUND);
         else
