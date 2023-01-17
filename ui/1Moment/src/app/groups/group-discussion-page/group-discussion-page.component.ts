@@ -54,6 +54,7 @@ export class GroupDiscussionPageComponent implements OnInit {
     }
     this.groupService.getGroupById(this.group.id).subscribe(value => {
       this.group = value;
+      this.isSubscribed= value.subscribed? value.subscribed :false;
     })
   }
 
