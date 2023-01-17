@@ -25,4 +25,18 @@ export class GroupService{
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer '+this.user.accessToken})
     });
   }
+
+  subscribe(groupId:number){
+    return this.http.patch('http://localhost:8080/group/'+groupId+'/subscribe',{},
+    {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer '+this.user.accessToken})
+    });
+  }
+
+  unsubscribe(groupId:number){
+    return this.http.patch('http://localhost:8080/group/'+groupId+'/unsubscribe',{},
+      {
+      headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})
+    });
+  }
 }
