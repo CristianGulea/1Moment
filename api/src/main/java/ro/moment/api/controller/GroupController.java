@@ -65,6 +65,29 @@ public class GroupController {
     }
 
 
+    @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.PATCH)
+    public ResponseEntity<?> like(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        System.out.println("Subscribe group " + id);
+        token = token.replaceFirst("Bearer ", "");
+
+        if (groupService.subscribeGroup(id, token))
+            return new ResponseEntity<>("subscribed", HttpStatus.OK);
+
+        return new ResponseEntity<>("Unable to subscribe", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.PATCH)
+    public ResponseEntity<?> dislike(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        System.out.println("Unsubscribe group " + id);
+        token = token.replaceFirst("Bearer ", "");
+
+        if (groupService.unsubscribeGroup(id, token))
+            return new ResponseEntity<>("unsubscribed", HttpStatus.OK);
+
+        return new ResponseEntity<>("Unable to unsubscribe", HttpStatus.BAD_REQUEST);
+    }
+
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String userError(Exception e) {

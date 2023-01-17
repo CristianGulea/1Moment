@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription,Long> {
     List<Subscription> findAllByUserId(Long id);
-
+    boolean existsByUserIdAndGroupId(Long user_id, Long group_id);
+    Subscription getByUserIdAndGroupId(Long user_id, Long group_id);
 }
