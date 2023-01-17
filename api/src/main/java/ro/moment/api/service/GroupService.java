@@ -39,18 +39,32 @@ public class GroupService {
         }
     }
 
-    public List<GroupDto> findAll() {
+    public List<GroupDto> findAll(String token) {
+        User user = jwtService.getUserByToken(token);
         List<Group> groups = groupRepository.findAll();
         List<GroupDto> dtos = new ArrayList<GroupDto>();
 
-        groups.forEach(g -> dtos.add(new GroupDto(g)));
+        groups.forEach(g -> {
+            GroupDto groupDto = new GroupDto(g);
+            if(subscriptionRepository.existsByUserIdAndGroupId(user.getId(),g.getId()))
+                groupDto.setSubscribed(true);
+            dtos.add(new GroupDto(g));
+        });
         return dtos;
     }
 
-    public GroupDto findById(Long id) {
+    public GroupDto findById(Long id, String token) {
+        User user = jwtService.getUserByToken(token);
         Optional<Group> group = groupRepository.findById(id);
-
-        return group.map(GroupDto::new).orElse(null);
+        GroupDto groupDto;
+        if(group.isPresent()){
+            groupDto = new GroupDto(group.get());
+            if(subscriptionRepository.existsByUserIdAndGroupId(user.getId(),group.get().getId()))
+                groupDto.setSubscribed(true);
+        }else{
+            groupDto=null;
+        }
+        return groupDto;
     }
 
     public void save(GroupDto groupDto) {
