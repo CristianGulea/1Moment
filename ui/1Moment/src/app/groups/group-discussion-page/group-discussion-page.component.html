@@ -6,9 +6,13 @@
     <span>{{group.name}}</span>
     <span fxFlex></span>
     <button mat-icon-button (click)="onSubscribe()">
-      <mat-icon
-        matTooltip="Subscribe">
+      <mat-icon *ngIf="isSubscribed"
+        matTooltip="UnSubscribe">
         email
+      </mat-icon>
+      <mat-icon *ngIf="!isSubscribed"
+        matTooltip="Subscribe">
+        mail_outline
       </mat-icon>
     </button>
   </mat-toolbar>

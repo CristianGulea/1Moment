@@ -26,6 +26,20 @@ export class GroupService{
     });
   }
 
+  subscribe(groupId:number){
+    return this.http.patch('http://localhost:8080/group/'+groupId+'/subscribe',{},
+    {
+      headers: new HttpHeaders({ 'Authorization': 'Bearer '+this.user.accessToken})
+    });
+  }
+
+  unsubscribe(groupId:number){
+    return this.http.patch('http://localhost:8080/group/'+groupId+'/unsubscribe',{},
+      {
+      headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})
+    });
+  }
+
   getGroupById(id:number){
     return this.http.get<Group>('http://localhost:8080/group/'+id ,{
       headers: new HttpHeaders({'Content-Type': 'application/json', 'Authorization': 'Bearer '+this.user.accessToken})

@@ -24,16 +24,17 @@ public class GroupController {
     private final GroupService groupService;
 
     @RequestMapping( method=RequestMethod.GET)
-    public List<GroupDto> getAll(){
+    public List<GroupDto> getAll(@RequestHeader("Authorization") String token){
         System.out.println("Get all groups ...");
-        return groupService.findAll();
+        token = token.replaceFirst("Bearer ", "");
+        return groupService.findAll(token);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getById(@PathVariable String id){
+    public ResponseEntity<?> getById(@PathVariable String id,@RequestHeader("Authorization") String token){
         System.out.println("Get by id "+id);
-
-        GroupDto group = groupService.findById(Long.valueOf(id));
+        token = token.replaceFirst("Bearer ", "");
+        GroupDto group = groupService.findById(Long.valueOf(id),token);
         if (group == null)
             return new ResponseEntity<String>("Group not found",HttpStatus.NOT_FOUND);
         else
@@ -62,6 +63,29 @@ public class GroupController {
             System.out.println("Ctrl Delete group exception");
             return new ResponseEntity<String>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
+    }
+
+
+    @RequestMapping(value = "/{id}/subscribe", method = RequestMethod.PATCH)
+    public ResponseEntity<?> like(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        System.out.println("Subscribe group " + id);
+        token = token.replaceFirst("Bearer ", "");
+
+        if (groupService.subscribeGroup(id, token))
+            return new ResponseEntity<>("subscribed", HttpStatus.OK);
+
+        return new ResponseEntity<>("Unable to subscribe", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/{id}/unsubscribe", method = RequestMethod.PATCH)
+    public ResponseEntity<?> dislike(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+        System.out.println("Unsubscribe group " + id);
+        token = token.replaceFirst("Bearer ", "");
+
+        if (groupService.unsubscribeGroup(id, token))
+            return new ResponseEntity<>("unsubscribed", HttpStatus.OK);
+
+        return new ResponseEntity<>("Unable to unsubscribe", HttpStatus.BAD_REQUEST);
     }
 
 

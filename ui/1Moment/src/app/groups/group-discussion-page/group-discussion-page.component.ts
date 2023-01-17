@@ -20,6 +20,7 @@ export class GroupDiscussionPageComponent implements OnInit {
   messages: Message[] = [];
   isFetching: boolean = false;
   error: boolean = false;
+  isSubscribed: boolean = true;
 
   constructor(public matDialog: MatDialog,
               private route: ActivatedRoute,
@@ -60,8 +61,12 @@ export class GroupDiscussionPageComponent implements OnInit {
   //
   // }
 
-  onSubscribe() {
-
+  onSubscribe(){
+    if(this.isSubscribed)
+      this.groupService.unsubscribe(this.group.id).subscribe(value => {});
+    else
+      this.groupService.subscribe(this.group.id).subscribe(value => {});
+    this.isSubscribed= !this.isSubscribed;
   }
 
   onLike(message: Message) {
