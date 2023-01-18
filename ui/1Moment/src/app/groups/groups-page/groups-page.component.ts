@@ -5,6 +5,8 @@ import {Group} from "./Group";
 import {Router} from "@angular/router";
 import {User} from "../../components/login/User";
 import {LoginService} from "../../components/login/login-service";
+import {FormControl} from "@angular/forms";
+import {MatDialog} from "@angular/material/dialog";
 import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 
 @Component({
@@ -14,6 +16,7 @@ import {debounceTime, distinctUntilChanged, Subject} from "rxjs";
 })
 export class GroupsPageComponent implements OnInit {
 
+  public nameControl = new FormControl();
   groups : Group[] = [];
   groupsCopy: Group[] = [];
   isFetching: boolean = false;
@@ -22,7 +25,7 @@ export class GroupsPageComponent implements OnInit {
   searchTerm = new Subject<string>();
   searchString: string;
 
-  constructor(private route: ActivatedRoute, private groupService: GroupService, private router: Router, private loginService: LoginService) {
+  constructor(public matDialog: MatDialog, private route: ActivatedRoute, private groupService: GroupService, private router: Router, private loginService: LoginService) {
     this.searchTerm.pipe(
       debounceTime(300),
       distinctUntilChanged())
@@ -56,5 +59,33 @@ export class GroupsPageComponent implements OnInit {
 
   navigateToFeed() {
     this.router.navigate(["/feed"]);
+  }
+
+  // @ts-ignore
+  openDialog(content): void {
+    this.matDialog.open(content, {
+      data: { },
+      height: '300',
+      width: '600px',
+    });
+  }
+
+  onCancelClick() {
+    this.matDialog.closeAll();
+  }
+
+  dateUpdated() {
+
+  }
+
+  onSaveClick() {
+    // @ts-ignore
+    let group: Group = {name: this.nameControl.value, subscribed: true};
+    this.groupService.createAGroup(group).subscribe(value => {
+      console.log(value);
+      this.groups = [...this.groups, value];
+    });
+    this.nameControl.reset();
+    this.matDialog.closeAll();
   }
 }

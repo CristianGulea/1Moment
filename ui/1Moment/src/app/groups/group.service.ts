@@ -63,4 +63,9 @@ export class GroupService{
     return this.http.post<Message>('http://localhost:8080/message', discussion,
       {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})});
   }
+
+  createAGroup(group: Group){
+    return this.http.post<Group>('http://localhost:8080/group', group,
+      {headers: new HttpHeaders({'Authorization': 'Bearer '+this.user.accessToken})});
+  }
 }
