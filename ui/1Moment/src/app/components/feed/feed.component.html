@@ -8,7 +8,7 @@
     </button>
   </mat-toolbar>
   <mat-list fxLayout="column" fxLayoutGap="20px" style="overflow: auto">
-    <mat-card class="shadow" fxLayout="row" fxLayoutAlign="space-between"  *ngFor="let discussion of discussions">
+    <mat-card (click)="navigateCommentPage(discussion)" class="shadow" fxLayout="row" fxLayoutAlign="space-between"  *ngFor="let discussion of discussions">
       <div class="container-fluid">
         <div class="post-detail">{{discussion.groupName}}・Posted by {{discussion.username}}  <span class="date-text">{{discussion.publishDate}}</span></div>
         <mat-card-title>

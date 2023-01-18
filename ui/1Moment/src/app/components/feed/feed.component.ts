@@ -49,4 +49,8 @@ export class FeedComponent implements OnInit {
     }
     return undefined;
   }
+
+  navigateCommentPage(discussion: Message) {
+    this.router.navigate(["/comments/" + discussion.id]);
+  }
 }
