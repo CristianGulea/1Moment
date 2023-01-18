@@ -1,6 +1,6 @@
 <div fxFlexFill fxLayout="column" style="display: flex" *ngIf="!isFetching">
   <mat-toolbar color="primary">
-    <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">person</mat-icon></span>
+    <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">feed</mat-icon></span>
     <span fxFlex></span>
     <button mat-icon-button (click)="openDialog(addModalG)"><mat-icon matTooltip="Add"> add_box </mat-icon></button>
     <button mat-icon-button (click)="onLogout()">
@@ -9,27 +9,24 @@
       </mat-icon>
     </button>
   </mat-toolbar>
-  <mat-form-field appearance="fill" style="background-color: rgb(117, 72, 189);" >
-    <mat-label ><span style="color: white;">Search groups by name</span></mat-label>
-    <input matInput />
+  <mat-form-field appearance="fill" style="background-color: rgb(117, 72, 189);">
+    <mat-label><span style="color: white;">Search groups by name</span></mat-label>
+    <input matInput [ngModel]="searchString" (ngModelChange)="this.searchTerm.next($event)"/>
     <mat-icon matPrefix style="color: white;">search</mat-icon>
   </mat-form-field>
-  <mat-list fxLayout="column" fxLayoutGap="20px"
-            style="margin-left: 5%; margin-right: 5% ; margin-top: 10px; overflow: auto">
-    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let group of groups">
-      <div>
-        <mat-card-title>{{group.name}}</mat-card-title>
-      </div>
-      <div>
-        <button *ngIf="false" mat-fab color="primary" (click)="onSubscribe(group)">
-          <mat-icon>fast_forward</mat-icon>
-        </button>
-        <button *ngIf="true" mat-fab color="primary" (click)="onSubscribe(group)">
+  <mat-grid-list [cols]="2" rowHeight="2:1" [gutterSize]="'10px'"
+                 style="margin-left: 10%; margin-right: 10% ; margin-top: 10px; overflow: auto"
+  >
+    <mat-grid-tile *ngFor="let group of groups" style="background-color: #f0f0f0; display: block">
+      <div fxFlexFill fxLayout="column" fxLayoutAlign="center center">
+        <br>
+        <h1>{{group.name}}</h1>
+        <button style="float: left" mat-fab color="primary" (click)="onGroupShow(group)">
           <mat-icon>fast_forward</mat-icon>
         </button>
       </div>
-    </mat-card>
-  </mat-list>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>
 <div fxFlexFill fxLayout="column" fxLayoutAlign="center center" *ngIf="isFetching && !error">
   <mat-spinner style="align-content: center"></mat-spinner>
