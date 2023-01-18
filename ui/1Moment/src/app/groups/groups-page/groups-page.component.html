@@ -1,6 +1,6 @@
 <div fxFlexFill fxLayout="column" style="display: flex" *ngIf="!isFetching">
   <mat-toolbar color="primary">
-    <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">person</mat-icon></span>
+    <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">feed</mat-icon></span>
     <span fxFlex></span>
     <button mat-icon-button (click)="onLogout()">
       <mat-icon matTooltip="Logout">
@@ -10,7 +10,7 @@
   </mat-toolbar>
   <mat-form-field appearance="fill" style="background-color: rgb(117, 72, 189);" >
     <mat-label ><span style="color: white;">Search groups by name</span></mat-label>
-    <input matInput />
+    <input matInput [ngModel]="searchString" (ngModelChange)="this.searchTerm.next($event)" />
     <mat-icon matPrefix style="color: white;">search</mat-icon>
   </mat-form-field>
   <mat-list fxLayout="column" fxLayoutGap="20px"
