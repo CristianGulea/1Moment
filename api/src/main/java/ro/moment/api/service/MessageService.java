@@ -80,7 +80,8 @@ public class MessageService {
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
 
-        messageRepository.save(message);
+        message = messageRepository.save(message);
+        messageDto.setId(message.getId());
     }
 
     public void deleteById(Long id) {
