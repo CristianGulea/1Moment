@@ -44,7 +44,7 @@ export class GroupsPageComponent implements OnInit {
     this.loginService.logout();
   }
 
-  onSubscribe(group: Group) {
+  onGroupShow(group: Group) {
     this.router.navigate(['group/', group.id])
   }
 
