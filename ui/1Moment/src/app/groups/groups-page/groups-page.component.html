@@ -2,6 +2,7 @@
   <mat-toolbar color="primary">
     <span (click)='navigateToFeed()'><mat-icon matTooltip="Feed">person</mat-icon></span>
     <span fxFlex></span>
+    <button mat-icon-button (click)="openDialog(addModalG)"><mat-icon matTooltip="Add"> add_box </mat-icon></button>
     <button mat-icon-button (click)="onLogout()">
       <mat-icon matTooltip="Logout">
         logout
@@ -18,9 +19,6 @@
     <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let group of groups">
       <div>
         <mat-card-title>{{group.name}}</mat-card-title>
-        <mat-card-content>
-          {{group.name}}
-        </mat-card-content>
       </div>
       <div>
         <button *ngIf="false" mat-fab color="primary" (click)="onSubscribe(group)">
@@ -36,3 +34,28 @@
 <div fxFlexFill fxLayout="column" fxLayoutAlign="center center" *ngIf="isFetching && !error">
   <mat-spinner style="align-content: center"></mat-spinner>
 </div>
+
+<ng-template #addModalG let-modal>
+  <div class="container">
+    <form (ngSubmit)="onSaveClick()">
+
+      <h1 mat-dialog-title>Create a group...</h1>
+
+
+      <mat-form-field appearance="fill" fxFlexFill>
+        <mat-label>Name</mat-label>
+        <input matInput [formControl]="nameControl">
+      </mat-form-field>
+
+
+
+      <div mat-dialog-actions class="flex-row">
+        <button  type="button" mat-button class="float-start" (click)="onCancelClick()">Close</button>
+        <button type="submit" mat-button class="float-end" cdkFocusInitial>Save</button>
+      </div>
+
+    </form>
+  </div>
+
+</ng-template>
+
