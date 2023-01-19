@@ -5,6 +5,7 @@ import {Message} from "../../groups/group-discussion-page/Message";
 import {CommentPageService} from "./comment-page-service";
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {MatSnackBar,MatSnackBarModule } from "@angular/material/snack-bar";
+import {User} from "../login/User";
 
 @Component({
   selector: 'app-comment-page',
@@ -16,6 +17,7 @@ export class CommentPageComponent implements OnInit {
   comments: Message[];
   isError: boolean = false;
   isLoading: boolean = false;
+  currentUserName: string;
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required]),
     date2: new FormControl(null, [Validators.required])
@@ -30,6 +32,7 @@ export class CommentPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserName= this.loginService.username;
     this.isLoading = true;
     this.commentService.getMessage(this.route.snapshot.params['id']).subscribe(value => {
       this.currentDiscussion = value;

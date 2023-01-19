@@ -24,7 +24,7 @@
         </button>
       </mat-card-content>
     </mat-card>
-    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages"  >
+    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages" [ngClass]="{'highlight': message.username === currentUserName}"  >
       <div  (click)="onDiscutionSelected(message.id)">
         <mat-card-title>{{message.title}}</mat-card-title>
         <mat-card-content>
