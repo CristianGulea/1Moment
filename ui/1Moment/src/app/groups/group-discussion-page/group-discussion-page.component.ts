@@ -135,5 +135,12 @@ export class GroupDiscussionPageComponent implements OnInit {
 
   }
 
+  onLikeChange(comment: Message) {
+    comment.liked = !comment.liked;
+    // @ts-ignore
+    comment.likeCount = comment.likeCount + (comment.liked ? +1 : -1);
+    comment.liked ? this.groupService.likeMessage(comment.id).subscribe() : this.groupService.dislikeMessage(comment.id).subscribe();
+  }
+
 }
 
