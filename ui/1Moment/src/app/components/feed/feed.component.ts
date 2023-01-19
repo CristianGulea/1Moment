@@ -14,11 +14,12 @@ import {FeedService} from "./feed-service";
 export class FeedComponent implements OnInit {
   discussions: Message[] = [];
   commentsMap = new Map<string, Message>();
+  currentUserName:string;
 
   constructor(private route: ActivatedRoute, private router: Router, private feedService: FeedService, private loginService: LoginService) {
     feedService.getUsersDiscussion()?.subscribe(list => {
       if (list != null) {
-        this.discussions = list;
+        this.discussions = list.filter(value1 => value1.publishDate = new Date(value1.publishDate));
       }
     });
 
@@ -33,6 +34,7 @@ export class FeedComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserName= this.loginService.username;
   }
 
   onLogout(){

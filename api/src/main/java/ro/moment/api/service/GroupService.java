@@ -71,7 +71,8 @@ public class GroupService {
         validateGroup(groupDto);
         Group group = groupDto.toDomain();
         group.setCreatedDate(LocalDate.now());
-        groupRepository.save(group);
+        group = groupRepository.save(group);
+        groupDto.setId(group.getId());
     }
 
     public void deleteById(Long id) {

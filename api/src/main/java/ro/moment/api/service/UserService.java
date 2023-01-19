@@ -78,7 +78,9 @@ public class UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRoles(List.of("USER"));
         user.setCreatedDate(LocalDate.now());
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        userDto.setId(user.getId());
     }
 
     public Token getTokensAtLogin(String username, String password) throws Exception {

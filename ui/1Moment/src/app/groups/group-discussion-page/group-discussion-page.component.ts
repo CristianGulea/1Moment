@@ -21,6 +21,7 @@ export class GroupDiscussionPageComponent implements OnInit {
   isFetching: boolean = false;
   error: boolean = false;
   isSubscribed: boolean = true;
+  currentUserName:string;
 
   constructor(public matDialog: MatDialog,
               private route: ActivatedRoute,
@@ -31,6 +32,7 @@ export class GroupDiscussionPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserName= this.loginService.username;
     const id =this.route.snapshot.params['id']
     this.group.id=id;
     this.route.params.subscribe(

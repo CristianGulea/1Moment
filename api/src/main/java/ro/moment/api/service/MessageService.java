@@ -68,19 +68,21 @@ public class MessageService {
         return message.map(value -> convertToMessageDTO(value, token)).orElse(null);
     }
 
-    public void save(MessageDto messageDto) {
+    public void save(MessageDto messageDto,String token) {
         if (messageDto.getPublishDate() == null || messageDto.getPublishDate().isBefore(LocalDateTime.now())) {
             messageDto.setPublishDate(LocalDateTime.now());
         }
 
         validateMessage(messageDto);
         Message message = messageDto.toDomain();
-        Long userId = messageDto.getUserId();       //todo: validate this
+        User user = jwtService.getUserByToken(token);
+        Long userId = user.getId();       //todo: validate this
         message.getUser().setId(userId);
         Long groupId =messageDto.getGroupId();      //todo: validate this
         message.getGroup().setId(groupId);
 
-        messageRepository.save(message);
+        message = messageRepository.save(message);
+        messageDto.setId(message.getId());
     }
 
     public void deleteById(Long id) {

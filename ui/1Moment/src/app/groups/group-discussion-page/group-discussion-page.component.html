@@ -19,13 +19,12 @@
   <mat-list class="discussion-list" fxLayout="column" fxLayoutGap="20px">
     <mat-card fxLayout="row" fxLayoutAlign="space-between">
       <mat-card-content>
-        <mat-card-title>Add a new discussion</mat-card-title>
         <button mat-raised-button color="primary" (click)="openDialog(addModal)">
           Add new Discussion
         </button>
       </mat-card-content>
     </mat-card>
-    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages"  >
+    <mat-card fxLayout="row" fxLayoutAlign="space-between" *ngFor="let message of messages" [ngClass]="{'highlight': message.username === currentUserName}"  >
       <div  (click)="onDiscutionSelected(message.id)">
         <mat-card-title>{{message.title}}</mat-card-title>
         <mat-card-content>

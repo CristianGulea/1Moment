@@ -51,9 +51,10 @@ public class MessageController {
 
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestBody MessageDto message) {
+    public ResponseEntity<?> create(@RequestBody MessageDto message,@RequestHeader("Authorization") String token) {
         try {
-            messageService.save(message);
+            token = token.replaceFirst("Bearer ", "");
+            messageService.save(message,token);
         } catch (ValidationException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
