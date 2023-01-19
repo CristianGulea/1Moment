@@ -32,12 +32,12 @@
         </mat-card-content>
       </div>
       <div>
-        <button *ngIf="!message.liked" mat-fab color="primary" (click)="onLike(message)">
-          <mat-icon>check_circle_outline</mat-icon>
+        <button mat-icon-button (click)="onLikeChange(message)">
+          <mat-icon *ngIf="!message.liked">favorite_border</mat-icon>
+          <mat-icon id="favoriteIcon" *ngIf="message.liked">favorite</mat-icon>
         </button>
-        <button *ngIf="message.liked" mat-fab color="primary" (click)="onDislike(message)">
-          <mat-icon>check_circle</mat-icon>
-        </button>
+
+        <span>{{message.likeCount}}</span>
       </div>
     </mat-card>
   </mat-list>
