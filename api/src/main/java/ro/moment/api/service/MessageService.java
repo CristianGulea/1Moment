@@ -52,12 +52,12 @@ public class MessageService {
     }
 
     public List<MessageDto> findAll(String token) {
-        List<Message> messages = messageRepository.findByPublishDateBefore(LocalDateTime.now());
+        List<Message> messages = messageRepository.findByPublishDateBeforeOrderByIdDesc(LocalDateTime.now());
         return convertToMessageDTOs(messages, token);
     }
 
     public List<MessageDto> findMessageByGroupId(Long id, String token) {
-        List<Message> messages = messageRepository.findByGroupIdAndPublishDateBeforeAndParentMessageId(id, LocalDateTime.now(),null);
+        List<Message> messages = messageRepository.findByGroupIdAndPublishDateBeforeAndParentMessageIdOrderByIdDesc(id, LocalDateTime.now(),null);
         return convertToMessageDTOs(messages, token);
     }
 
@@ -91,7 +91,7 @@ public class MessageService {
 
 
     public List<MessageDto> findMessagesByParenMessageId(Long id, String token) {
-        List<Message> messages = messageRepository.findMessagesByParentMessageIdAndPublishDateBefore(id, LocalDateTime.now());
+        List<Message> messages = messageRepository.findMessagesByParentMessageIdAndPublishDateBeforeOrderByIdDesc(id, LocalDateTime.now());
 
         return convertToMessageDTOs(messages, token);
     }
@@ -104,7 +104,7 @@ public class MessageService {
         for (int i=0;i<subscriptions.size();i++)
         {
             List<Message> auxiliar = new ArrayList<Message>();
-            auxiliar = messageRepository.findByGroupIdAndPublishDateBeforeAndParentMessageId(subscriptions.get(i).getGroup().getId(), LocalDateTime.now(),null);
+            auxiliar = messageRepository.findByGroupIdAndPublishDateBeforeAndParentMessageIdOrderByIdDesc(subscriptions.get(i).getGroup().getId(), LocalDateTime.now(),null);
             for (int j=0;j<auxiliar.size();j++)
             {
                 foundMessages.add(auxiliar.get(j));
@@ -121,6 +121,7 @@ public class MessageService {
         }
 
 
+        finalFoundMessages.sort((a, b) -> (int) (b.getId() - a.getId()));
         return finalFoundMessages;
     }
 
@@ -153,7 +154,7 @@ public class MessageService {
     }
 
     private MessageDto mostPopularMessageByParentMessageId(Long id, String token) {
-        List<Message> messages = messageRepository.findMessagesByParentMessageIdAndPublishDateBefore(id, LocalDateTime.now());
+        List<Message> messages = messageRepository.findMessagesByParentMessageIdAndPublishDateBeforeOrderByIdDesc(id, LocalDateTime.now());
 
 
         long maxNumberOfLikes = 0;
